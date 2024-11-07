@@ -117,7 +117,7 @@
                             </a>
                         </li>
                         <li class="nav-item has-treeview">
-                            <a href="" class="nav-link">
+                            <a href="{{ route('admin.comment.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-comments"></i>
                                 <p>
                                     Bình Luận
