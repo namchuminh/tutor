@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\AdminPostController;
 use App\Http\Controllers\Admin\AdminPhuHuynhController;
 use App\Http\Controllers\Admin\AdminSubjectController;
 use App\Http\Controllers\Admin\AdminReviewController;
+use App\Http\Controllers\Admin\AdminCommentController;
+
 
 Route::prefix('admin')->group(function () {
     Route::get('login', [AdminLoginController::class, 'index'])->name('admin.login')->middleware('notadmin');
@@ -51,12 +53,12 @@ Route::prefix('admin')->group(function () {
         Route::get('phuhuynh/{phuhuynh}/block', [AdminPhuHuynhController::class, 'block'])->name('admin.phuhuynh.block')->middleware('admin');
         
         Route::get('review', [AdminReviewController::class, 'index'])->name('admin.review.index')->middleware('admin');
+        Route::delete('review/{review}/destroy', [AdminReviewController::class, 'destroy'])->name('admin.review.destroy')->middleware('admin');
+        
+        Route::get('comment', [AdminCommentController::class, 'index'])->name('admin.comment.index')->middleware('admin');
+        Route::delete('comment/{comment}/destroy', [AdminCommentController::class, 'destroy'])->name('admin.comment.destroy')->middleware('admin');
     });
 });
-
-
-
-
 
 
 

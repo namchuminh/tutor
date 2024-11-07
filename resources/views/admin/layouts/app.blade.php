@@ -109,7 +109,7 @@
                             </a>
                         </li>
                         <li class="nav-item has-treeview">
-                            <a href="" class="nav-link">
+                            <a href="{{ route('admin.review.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-star-half-stroke"></i>
                                 <p>
                                     Đánh Giá

@@ -1,16 +1,16 @@
 @extends('Admin.layouts.app')
-@section('title', 'Quản Lý Bài Viết')
+@section('title', 'Quản Lý Đánh Giá')
 @section('content')
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Quản Lý Bài Viết</h1>
+                <h1 class="m-0 text-dark">Quản Lý Đánh Giá</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Trang Chủ</a></li>
-                    <li class="breadcrumb-item active">Quản Lý Bài Viết</li>
+                    <li class="breadcrumb-item active">Quản Lý Đánh Giá</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -23,7 +23,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
-                            <form action="{{ route('admin.post.index') }}" method="GET" class="d-flex">
+                            <form action="{{ route('admin.review.index') }}" method="GET" class="d-flex">
                                 <input type="text" name="search" class="form-control"
                                     placeholder="Tìm kiếm" value="{{ request()->query('search') }}">
                                 <button type="submit" class="btn btn-primary ml-2 w-50">Tìm kiếm</button>
@@ -36,68 +36,41 @@
                             <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Hình Ảnh</th>
-                                    <th>Tiêu Đề</th>
-                                    <th>Người Đăng</th>
-                                    <th>Môn Học</th>
-                                    <th>Chi Phí</th>
-                                    <th>Trạng Thái</th>
-                                    <th>Hành động</th>
+                                    <th>Phụ Huynh</th>
+                                    <th>Gia Sư</th>
+                                    <th>Đánh Giá</th>
+                                    <th>Hành Động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($posts as $key => $post)
+                                @forelse($reviews as $key => $review)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
+                                        <td>{{ $review->phuHuynh->user->name ?? 'N/A' }}</td>
+                                        <td>{{ $review->giaSu->user->name ?? 'N/A' }}</td>
                                         <td>
-                                            <img style="width: 150px; height:150px;" src="{{ $post->image ?? 'https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png' }}" alt="">
-                                        </td>
-                                        <td>{{ $post->title }}</td>
-                                        <td>
-                                            <a href="{{ route('admin.tutor.edit', $post->giaSu->id) }}">{{ $post->giaSu->user->name ?? 'N/A' }}</a>
-                                        </td>
-                                        <td>{{ $post->subject->name ?? 'N/A' }}</td>
-                                        
-                                        <td>{{ number_format($post->fee) }}đ</td>
-                                        <td>
-                                            @if ($post->status == "pending")
-                                                <form action="{{ route('admin.post.update', $post->id) }}" method="POST"
-                                                style="display:inline;">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <input type="hidden" value="accept" name="status">
-                                                    <button type="submit" class="btn btn-sm btn-success"
-                                                    ><i class="fas fa-check-circle"></i> Phê Duyệt</button>
-                                                </form>
-                                                <form action="{{ route('admin.post.update', $post->id) }}" method="POST"
-                                                style="display:inline;">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <input type="hidden" value="reject" name="status">
-                                                    <button type="submit" class="btn btn-sm btn-dark"
-                                                    ><i class="fas fa-times-circle"></i> Từ Chối</button>
-                                                </form>
-                                            @elseif($post->status == "reject")
-                                                Đã từ chối
-                                            @else
-                                                <b>Đã phê duyệt</b>
-                                            @endif
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                @if ($i <= $review->rating)
+                                                    <i class="fa-solid fa-star" style="color: gold;"></i>
+                                                @else
+                                                    <i class="fa-regular fa-star" style="color: #d3d3d3;"></i>
+                                                @endif
+                                            @endfor
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.post.show', $post->id) }}"
-                                                class="btn btn-sm btn-primary"><i class="fa-regular fa-eye"></i> Xem Chi Tiết</a>
-                                            <form action="{{ route('admin.post.destroy', $post->id) }}" method="POST"
-                                                style="display:inline;">
+                                            <form action="{{ route('admin.review.destroy', $review->id) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger"
-                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><i class="fa-solid fa-trash"></i> Xóa</button>
+                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
+                                                    <i class="fa-solid fa-trash"></i> Xóa
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center">Không tìm thấy bài viết nào</td>
+                                        <td colspan="5" class="text-center">Không tìm thấy đánh giá nào</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -105,7 +78,7 @@
                     </div>
 
                     <div class="card-footer clearfix">
-                        {{ $posts->appends(request()->query())->links('pagination::bootstrap-4') }}
+                        {{ $reviews->appends(request()->query())->links('pagination::bootstrap-4') }}
                     </div>
                 </div>
             </div>
