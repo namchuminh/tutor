@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminPhuHuynhController;
 use App\Http\Controllers\Admin\AdminSubjectController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Admin\AdminCommentController;
+use App\Http\Controllers\Admin\AdminVipPackageDetailController;
 
 
 Route::prefix('admin')->group(function () {
@@ -57,6 +58,16 @@ Route::prefix('admin')->group(function () {
         
         Route::get('comment', [AdminCommentController::class, 'index'])->name('admin.comment.index')->middleware('admin');
         Route::delete('comment/{comment}/destroy', [AdminCommentController::class, 'destroy'])->name('admin.comment.destroy')->middleware('admin');
+    
+        Route::resource('/vip', AdminVipPackageDetailController::class)->names([
+            'index' => 'admin.vip.index',
+            'create' => 'admin.vip.create',
+            'store' => 'admin.vip.store',
+            'show' => 'admin.vip.show',
+            'edit' => 'admin.vip.edit',
+            'update' => 'admin.vip.update',
+            'destroy' => 'admin.vip.destroy',
+        ]);
     });
 });
 

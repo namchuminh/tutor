@@ -126,7 +126,7 @@
                         </li>
                         <li class="nav-header">QUẢN LÝ GÓI VIP</li>
                         <li class="nav-item has-treeview">
-                            <a href="" class="nav-link">
+                            <a href="{{ route('admin.vip.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-crown"></i>
                                 <p>
                                     Gói Vip
