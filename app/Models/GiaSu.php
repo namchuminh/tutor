@@ -15,7 +15,10 @@ class GiaSu extends Model
         'review_count',
         'fee',
         'area',
-        'post_status'
+        'post_status',
+        'years_of_experience',
+        'education_level',
+        'balance'
     ];
 
     public function user()

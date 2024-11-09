@@ -95,9 +95,35 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-group">
-                                <label for="fee">Phí</label>
-                                <input type="number" class="form-control" id="fee" name="fee" placeholder="Phí" value="{{ $tutor->fee }}">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="education_level">Trình độ</label>
+                                        <select id="education_level" name="education_level" class="form-control">
+                                            <option value="Sinh Viên" {{ $tutor->education_level == 'Sinh Viên' ? 'selected' : '' }}>Sinh Viên</option>
+                                            <option value="Cử Nhân" {{ $tutor->education_level == 'Cử Nhân' ? 'selected' : '' }}>Cử Nhân</option>
+                                            <option value="Thạc Sĩ" {{ $tutor->education_level == 'Thạc Sĩ' ? 'selected' : '' }}>Thạc Sĩ</option>
+                                            <option value="Kỹ Sư" {{ $tutor->education_level == 'Kỹ Sư' ? 'selected' : '' }}>Kỹ Sư</option>
+                                            <option value="Chuyên Gia" {{ $tutor->education_level == 'Chuyên Gia' ? 'selected' : '' }}>Chuyên Gia</option>
+                                            <option value="Giáo Viên" {{ $tutor->education_level == 'Giáo Viên' ? 'selected' : '' }}>Giáo Viên</option>
+                                            <option value="Tiến Sĩ" {{ $tutor->education_level == 'Tiến Sĩ' ? 'selected' : '' }}>Tiến Sĩ</option>
+                                            <option value="Giáo Sư" {{ $tutor->education_level == 'Giáo Sư' ? 'selected' : '' }}>Giáo Sư</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="years_of_experience">Kinh nghiệm (năm)</label>
+                                        <input type="number" class="form-control" id="years_of_experience" name="years_of_experience" placeholder="Số năm kinh nghiệm" value="{{ $tutor->years_of_experience }}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="fee">Phí</label>
+                                        <input type="number" class="form-control" id="fee" name="fee" placeholder="Phí" value="{{ $tutor->fee }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="balance">Số dư</label>
+                                <input type="text" class="form-control" id="balance" placeholder="Số dư" value="{{ number_format($tutor->balance) }}đ" disabled>
                             </div>
                         </div>
                     </div>
@@ -106,8 +132,67 @@
                 </form>
             </div>
         </div>
+        <div class="row">
+            <form class="col-6" method="POST", action="{{ route('admin.phuhuynh.balance', $tutor->id) }}">
+                @csrf
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">Thông Tin Số Dư</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="slug">Hành Động</label>
+                                    <select name="action" class="form-control">
+                                        <option value="add">Cộng Tiền</option>
+                                        <option value="sub">Trừ Tiền</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="blance">Số Tiền</label>
+                                    <input type="number" class="form-control" id="blance" name="balance" placeholder="Nhập số tiền" required>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Thực Hiện</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <form class="col-6">
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title">Thông Tin Gói Vip</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="name">Gói Vip Hiện Tại</label>
+                                    <input type="text" class="form-control" value="{{ empty($tutor->vip_package) ? 'Chưa sử dụng VIP' : $tutor->vip_package }}" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="slug">Chọn Gói VIP</label>
+                                    <select name="action" class="form-control">
+                                        <option value="add">Cộng Tiền</option>
+                                        <option value="sub">Trừ Tiền</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Thực Hiện</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div><!-- /.container-fluid -->
 </section>
+<style>
+    .form-control:disabled, .form-control[readonly] {
+        background-color: white;
+        opacity: 1;
+    }
+</style>
 @endsection
 @section('script')
 <script>
