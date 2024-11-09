@@ -134,7 +134,7 @@
                             </a>
                         </li>
                         <li class="nav-item has-treeview">
-                            <a href="" class="nav-link">
+                            <a href="{{ route('admin.transaction.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-money-bill-wave"></i>
                                 <p>
                                     Giao Dịch

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminPhuHuynhController;
 use App\Http\Controllers\Admin\AdminSubjectController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Admin\AdminCommentController;
+use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\AdminVipPackageDetailController;
 
 
@@ -68,6 +69,8 @@ Route::prefix('admin')->group(function () {
             'update' => 'admin.vip.update',
             'destroy' => 'admin.vip.destroy',
         ]);
+
+        Route::get('transaction', [AdminTransactionController::class, 'index'])->name('admin.transaction.index')->middleware('admin');
     });
 });
 
