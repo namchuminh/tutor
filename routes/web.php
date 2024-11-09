@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminSubjectController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Admin\AdminCommentController;
 use App\Http\Controllers\Admin\AdminTransactionController;
+use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\AdminVipPackageDetailController;
 
 
@@ -71,6 +72,10 @@ Route::prefix('admin')->group(function () {
         ]);
 
         Route::get('transaction', [AdminTransactionController::class, 'index'])->name('admin.transaction.index')->middleware('admin');
+
+        Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('admin.profile.edit')->middleware('admin');
+        Route::post('/profile/update', [AdminProfileController::class, 'update'])->name('admin.profile.update')->middleware('admin');
+        Route::post('/profile/change-password', [AdminProfileController::class, 'changePassword'])->name('admin.profile.changePassword')->middleware('admin');
     });
 });
 
