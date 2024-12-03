@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Review;
+use App\Models\GiaSu;
 
 class AdminReviewController extends Controller
 {
@@ -13,16 +14,22 @@ class AdminReviewController extends Controller
         // Lấy từ khóa tìm kiếm
         $search = $request->input('search');
 
-        // Lấy danh sách đánh giá với tìm kiếm và phân trang
-        $reviews = Review::with(['giaSu.user', 'phuHuynh.user']) // Eager load người đánh giá và người bị đánh giá
+        // Kiểm tra vai trò của người dùng
+        $reviews = Review::with(['giaSu.user', 'phuHuynh.user']) // Eager load
+            ->when(auth()->user()->role === 'gia_su', function ($query) {
+                // Nếu vai trò là 'gia_su', lấy gia_su_id dựa trên user_id
+                $giaSuId = GiaSu::where('user_id', auth()->user()->id)->value('id');
+                $query->where('gia_su_id', $giaSuId);
+            })
             ->when($search, function ($query) use ($search) {
+                // Áp dụng tìm kiếm
                 $query->whereHas('phuHuynh.user', function ($q) use ($search) {
                     $q->where('name', 'like', '%' . $search . '%')
-                      ->orWhere('email', 'like', '%' . $search . '%');
+                    ->orWhere('email', 'like', '%' . $search . '%');
                 })
                 ->orWhereHas('giaSu.user', function ($q) use ($search) {
                     $q->where('name', 'like', '%' . $search . '%')
-                      ->orWhere('email', 'like', '%' . $search . '%');
+                    ->orWhere('email', 'like', '%' . $search . '%');
                 });
             })
             ->orderBy('id', 'desc')

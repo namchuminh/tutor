@@ -11,6 +11,7 @@ class Post extends Model
 
     protected $fillable = [
         'gia_su_id',
+        'user_id',
         'subject_id',
         'title',
         'description',

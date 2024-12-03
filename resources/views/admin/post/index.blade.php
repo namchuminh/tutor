@@ -28,6 +28,14 @@
                                     placeholder="Tìm kiếm" value="{{ request()->query('search') }}">
                                 <button type="submit" class="btn btn-primary ml-2 w-50">Tìm kiếm</button>
                             </form>
+                            @if(auth()->user()->role == "gia_su")
+                                <a href="{{ route('admin.post.create') }}" class="btn btn-success">
+                                    Thêm Bài Viết 
+                                    @if ($checkVip == false)
+                                        (Chưa Mua Vip)
+                                    @endif
+                                </a>
+                            @endif
                         </div>
                     </div>
 
@@ -38,7 +46,9 @@
                                     <th>STT</th>
                                     <th>Hình Ảnh</th>
                                     <th>Tiêu Đề</th>
-                                    <th>Người Đăng</th>
+                                    @if (auth()->user()->role == "admin")
+                                        <th>Người Đăng</th>
+                                    @endif
                                     <th>Môn Học</th>
                                     <th>Chi Phí</th>
                                     <th>Trạng Thái</th>
@@ -50,16 +60,19 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>
-                                            <img style="width: 150px; height:150px;" src="{{ $post->image ?? 'https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png' }}" alt="">
+                                            <img style="width: 150px; height:150px;" src="{{ asset('storage/' . $post->image) ?? 'https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png' }}" alt="">
                                         </td>
                                         <td>{{ $post->title }}</td>
-                                        <td>
-                                            <a href="{{ route('admin.tutor.edit', $post->giaSu->id) }}">{{ $post->giaSu->user->name ?? 'N/A' }}</a>
-                                        </td>
+                                        @if (auth()->user()->role == "admin")
+                                            <td>
+                                                <a href="{{ route('admin.tutor.edit', $post->giaSu->id) }}">{{ $post->giaSu->user->name ?? 'N/A' }}</a>
+                                            </td>
+                                        @endif
                                         <td>{{ $post->subject->name ?? 'N/A' }}</td>
                                         
                                         <td>{{ number_format($post->fee) }}đ</td>
                                         <td>
+                                        @if (auth()->user()->role == "admin")
                                             @if ($post->status == "pending")
                                                 <form action="{{ route('admin.post.update', $post->id) }}" method="POST"
                                                 style="display:inline;">
@@ -82,10 +95,24 @@
                                             @else
                                                 <b>Đã phê duyệt</b>
                                             @endif
+                                        @else
+                                            @if ($post->status == "pending")
+                                                <b style="color: red;">Đang chờ duyệt</b>
+                                            @elseif($post->status == "reject")
+                                                Đã từ chối
+                                            @else
+                                                <b>Đã phê duyệt</b>
+                                            @endif
+                                        @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.post.show', $post->id) }}"
+                                            @if (auth()->user()->role == "admin")
+                                                <a href="{{ route('admin.post.show', $post->id) }}"
                                                 class="btn btn-sm btn-primary"><i class="fa-regular fa-eye"></i> Xem Chi Tiết</a>
+                                            @else
+                                                <a href="{{ route('admin.post.show', $post->id) }}"
+                                                class="btn btn-sm btn-primary"><i class="fa-regular fa-pen-to-square"></i></i> Chỉnh Sửa</a>
+                                            @endif
                                             <form action="{{ route('admin.post.destroy', $post->id) }}" method="POST"
                                                 style="display:inline;">
                                                 @csrf

@@ -39,7 +39,9 @@
                                     <th>Người dùng</th>
                                     <th>Bài viết</th>
                                     <th>Nội dung</th>
-                                    <th>Hành động</th>
+                                    @if(auth()->user()->role == "admin")
+                                        <th>Hành động</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,17 +55,19 @@
                                             <a href="{{ route('admin.post.show', $comment->post->id) }}">{{ $comment->post->title ?? 'N/A' }}</a>
                                         </td>
                                         <td>{{ $comment->content }}</td>
-                                        <td>
-                                            <form action="{{ route('admin.comment.destroy', $comment->id) }}" method="POST"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
-                                                    <i class="fa-solid fa-trash"></i> Xóa
-                                                </button>
-                                            </form>
-                                        </td>
+                                        @if(auth()->user()->role == "admin")
+                                            <td>
+                                                <form action="{{ route('admin.comment.destroy', $comment->id) }}" method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
+                                                        <i class="fa-solid fa-trash"></i> Xóa
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @empty
                                     <tr>

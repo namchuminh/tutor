@@ -17,7 +17,7 @@ class AdminRole
     public function handle(Request $request, Closure $next)
     {
         // Kiểm tra xem người dùng đã đăng nhập và có role là admin hay không
-        if (auth()->check() && auth()->user()->role == 'admin') {
+        if (auth()->check() && (auth()->user()->role == 'admin' || auth()->user()->role == 'gia_su')) {
             return $next($request);
         }
 

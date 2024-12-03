@@ -28,7 +28,9 @@
                                     placeholder="Tìm kiếm" value="{{ request()->query('search') }}">
                                 <button type="submit" class="btn btn-primary ml-2 w-50">Tìm kiếm</button>
                             </form>
-                            <a href="{{ route('admin.subject.create') }}" class="btn btn-success">Thêm Môn Học</a>
+                            @if(auth()->user()->role == "admin")
+                                <a href="{{ route('admin.subject.create') }}" class="btn btn-success">Thêm Môn Học</a>
+                            @endif
                         </div>
                     </div>
 
@@ -40,7 +42,9 @@
                                     <th>Hình Ảnh</th>
                                     <th>Tên Môn Học</th>
                                     <th>Đường Dẫn</th>
-                                    <th>Hành động</th>
+                                    @if(auth()->user()->role == "admin")
+                                        <th>Hành động</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,17 +58,19 @@
                                         <td>
                                             {{ $subject->slug ?? 'N/A' }}
                                         </td>
-                                        <td>
-                                            <a href="{{ route('admin.subject.edit', $subject->id) }}"
-                                                class="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square"></i> Cập Nhật</a>
-                                            <form action="{{ route('admin.subject.destroy', $subject->id) }}" method="POST"
-                                                style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><i class="fa-solid fa-trash"></i> Xóa</button>
-                                            </form>
-                                        </td>
+                                        @if(auth()->user()->role == "admin")
+                                            <td>
+                                                <a href="{{ route('admin.subject.edit', $subject->id) }}"
+                                                    class="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square"></i> Cập Nhật</a>
+                                                <form action="{{ route('admin.subject.destroy', $subject->id) }}" method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><i class="fa-solid fa-trash"></i> Xóa</button>
+                                                </form>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @empty
                                     <tr>

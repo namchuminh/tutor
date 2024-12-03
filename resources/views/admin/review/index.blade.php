@@ -37,9 +37,13 @@
                                 <tr>
                                     <th>STT</th>
                                     <th>Phụ Huynh</th>
-                                    <th>Gia Sư</th>
+                                    @if(auth()->user()->role == "admin")
+                                        <th>Gia Sư</th>
+                                    @endif
                                     <th>Đánh Giá</th>
-                                    <th>Hành Động</th>
+                                    @if(auth()->user()->role == "admin")
+                                        <th>Hành Động</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,7 +51,9 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td><a href="{{ route('admin.phuhuynh.show', $review->phuHuynh->id) }}">{{ $review->phuHuynh->user->name ?? 'N/A' }}</a></td>
-                                        <td><a href="{{ route('admin.tutor.edit', $review->giaSu->id) }}">{{ $review->giaSu->user->name ?? 'N/A' }}</a></td>
+                                        @if(auth()->user()->role == "admin")
+                                            <td><a href="{{ route('admin.tutor.edit', $review->giaSu->id) }}">{{ $review->giaSu->user->name ?? 'N/A' }}</a></td>
+                                        @endif
                                         <td>
                                             @for ($i = 1; $i <= 5; $i++)
                                                 @if ($i <= $review->rating)
@@ -57,16 +63,18 @@
                                                 @endif
                                             @endfor
                                         </td>
-                                        <td>
-                                            <form action="{{ route('admin.review.destroy', $review->id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger"
-                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
-                                                    <i class="fa-solid fa-trash"></i> Xóa
-                                                </button>
-                                            </form>
-                                        </td>
+                                        @if(auth()->user()->role == "admin")
+                                            <td>
+                                                <form action="{{ route('admin.review.destroy', $review->id) }}" method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
+                                                        <i class="fa-solid fa-trash"></i> Xóa
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @empty
                                     <tr>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Models\GiaSu;
 
 class AdminCommentController extends Controller
 {
@@ -18,6 +19,12 @@ class AdminCommentController extends Controller
 
         // Lấy danh sách bình luận cùng thông tin người dùng và bài viết
         $comments = Comment::with(['user', 'post'])
+            ->when(auth()->user()->role === 'gia_su', function ($query) {
+                // Nếu người dùng là gia_su, lấy các bình luận có post.user_id = auth()->user()->id
+                $query->whereHas('post', function ($q) {
+                    $q->where('user_id', auth()->user()->id);
+                });
+            })
             ->when($search, function ($query) use ($search) {
                 // Tìm kiếm theo tên người dùng hoặc nội dung bình luận
                 $query->whereHas('user', function ($q) use ($search) {

@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.css') }}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-    
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -42,8 +42,16 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
-
-
+            @php
+                $giaSu = \App\Models\GiaSu::where('user_id', auth()->user()->id)->first();
+            @endphp
+            <ul class="navbar-nav ml-auto">
+                <!-- Messages Dropdown Menu -->
+                <li class="nav-item">
+                    
+                    <h3 class="card-title"><a href="{{ route('admin.profile.edit') }}"><i class="fa-regular fa-user"></i> {{ auth()->user()->name }}</a> <a href="{{ route('admin.deposit.index') }}">({{ number_format($giaSu->balance) }} VNĐ)</a></h3>
+                </li>
+            </ul>
         </nav>
         <!-- /.navbar -->
 
@@ -73,15 +81,21 @@
                             </a>
                         </li>
 
-                        <li class="nav-header">QUẢN LÝ GIA SƯ</li>
-                        <li class="nav-item has-treeview">
-                            <a href="{{ route('admin.tutor.index') }}" class="nav-link">
-                                <i class="nav-icon fa-solid fa-graduation-cap"></i>
-                                <p>
-                                    Gia Sư
-                                </p>
-                            </a>
-                        </li>
+                        @if (auth()->user()->role == "admin")
+                            <li class="nav-header">QUẢN LÝ GIA SƯ</li>
+                        @else
+                            <li class="nav-header">QUẢN LÝ NỘI DUNG</li>
+                        @endif
+                        @if (auth()->user()->role == "admin")
+                            <li class="nav-item has-treeview">
+                                <a href="{{ route('admin.tutor.index') }}" class="nav-link">
+                                    <i class="nav-icon fa-solid fa-graduation-cap"></i>
+                                    <p>
+                                        Gia Sư
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
                         <li class="nav-item has-treeview">
                             <a href="{{ route('admin.post.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-signs-post"></i>
@@ -99,15 +113,22 @@
                             </a>
                         </li>
 
-                        <li class="nav-header">QUẢN LÝ PHỤ HUYNH</li>
-                        <li class="nav-item has-treeview">
-                            <a href="{{ route('admin.phuhuynh.index') }}" class="nav-link">
-                                <i class="nav-icon fa-solid fa-user-group"></i>
-                                <p>
-                                    Phụ Huynh
-                                </p>
-                            </a>
-                        </li>
+                        @if (auth()->user()->role == "admin")
+                            <li class="nav-header">QUẢN LÝ PHỤ HUYNH</li>
+                        @else
+                            <li class="nav-header">QUẢN LÝ PHẢN HỒI</li>
+                        @endif
+
+                        @if (auth()->user()->role == "admin")
+                            <li class="nav-item has-treeview">
+                                <a href="{{ route('admin.phuhuynh.index') }}" class="nav-link">
+                                    <i class="nav-icon fa-solid fa-user-group"></i>
+                                    <p>
+                                        Phụ Huynh
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
                         <li class="nav-item has-treeview">
                             <a href="{{ route('admin.review.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-star-half-stroke"></i>
@@ -125,6 +146,16 @@
                             </a>
                         </li>
                         <li class="nav-header">QUẢN LÝ GÓI VIP</li>
+                        @if (auth()->user()->role == "gia_su")
+                            <li class="nav-item has-treeview">
+                                <a href="{{ route('admin.deposit.index') }}" class="nav-link">
+                                    <i class="nav-icon fa-solid fa-money-bill-wave"></i>
+                                    <p>
+                                        Nạp Tiền
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
                         <li class="nav-item has-treeview">
                             <a href="{{ route('admin.vip.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-crown"></i>
@@ -133,24 +164,29 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item has-treeview">
-                            <a href="{{ route('admin.transaction.index') }}" class="nav-link">
-                                <i class="nav-icon fa-solid fa-money-bill-wave"></i>
-                                <p>
-                                    Giao Dịch
-                                </p>
-                            </a>
-                        </li>
+
+                        @if (auth()->user()->role == "admin")
+                            <li class="nav-item has-treeview">
+                                <a href="{{ route('admin.transaction.index') }}" class="nav-link">
+                                    <i class="nav-icon fa-solid fa-money-bill-wave"></i>
+                                    <p>
+                                        Giao Dịch
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
 
                         <li class="nav-header">CÀI ĐẶT CHUNG</li>
-                        <li class="nav-item has-treeview">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fa-solid fa-gear"></i>
-                                <p>
-                                    Cấu Hình
-                                </p>
-                            </a>
-                        </li>
+                        @if (auth()->user()->role == "admin")
+                            <li class="nav-item has-treeview">
+                                <a href="" class="nav-link">
+                                    <i class="nav-icon fa-solid fa-gear"></i>
+                                    <p>
+                                        Cấu Hình
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
                         <li class="nav-item has-treeview">
                             <a href="{{ route('admin.profile.edit') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-lock"></i>
@@ -221,6 +257,7 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('dist/js/demo.js') }}"></script>
 </body>
+
 </html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
@@ -229,7 +266,7 @@
 @if ($errors->any())
     @foreach ($errors->all() as $error)
         <script>
-            $(document).ready(function(){
+            $(document).ready(function () {
                 toastr.options = {
                     closeButton: true,
                     progressBar: true,
@@ -244,7 +281,7 @@
 
 @if (session('success'))
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             toastr.options = {
                 closeButton: true,
                 progressBar: true,
@@ -258,7 +295,7 @@
 
 @if (session('error'))
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             toastr.options = {
                 closeButton: true,
                 progressBar: true,

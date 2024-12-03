@@ -29,7 +29,7 @@ class AdminLoginController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            if (auth()->user()->role == 'admin') {
+            if (auth()->user()->role != 'phu_huynh') {
                 return redirect()->intended('/admin');
             } else {
                 Auth::logout();

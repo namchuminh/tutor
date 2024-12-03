@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Admin\AdminCommentController;
 use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\Admin\AdminDepositController;
 use App\Http\Controllers\Admin\AdminVipPackageDetailController;
 
 
@@ -71,7 +72,14 @@ Route::prefix('admin')->group(function () {
             'destroy' => 'admin.vip.destroy',
         ]);
 
+        Route::get('/vip/register/{id}', [AdminVipPackageDetailController::class, 'register'])->name('admin.vip.register')->middleware('admin');
+
         Route::get('transaction', [AdminTransactionController::class, 'index'])->name('admin.transaction.index')->middleware('admin');
+
+        
+        Route::get('/deposit', [AdminDepositController::class, 'index'])->name('admin.deposit.index')->middleware('admin');
+        Route::post('/deposit', [AdminDepositController::class, 'pay'])->name('admin.deposit.pay')->middleware('admin');
+        Route::get('/deposit/vnpay-return', [AdminDepositController::class, 'vnpayReturn'])->name('admin.deposit.vnpayReturn')->middleware('admin');
 
         Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('admin.profile.edit')->middleware('admin');
         Route::post('/profile/update', [AdminProfileController::class, 'update'])->name('admin.profile.update')->middleware('admin');

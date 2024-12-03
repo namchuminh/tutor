@@ -4,19 +4,53 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\VipPackageDetail;
+use App\Models\VipPackage;
+use App\Models\GiaSu;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class AdminVipPackageDetailController extends Controller
 {
     public function index(Request $request)
     {
+        if (auth()->user()->role == "gia_su") {
+            // Nhận từ khóa tìm kiếm từ request
+            $search = $request->input('search');
+
+            $vipPackages = VipPackageDetail::when($search, function ($query) use ($search) {
+                $query->where('package_type', 'like', '%' . $search . '%');
+            })
+                ->orderBy('id', 'desc')
+                ->paginate(10); // Phân trang 10 bản ghi
+
+            // Dùng map để thêm trạng thái is_active vào mỗi gói VIP
+            $vipPackages->getCollection()->transform(function ($vipPackageDetail) {
+                // Lấy thông tin gói VIP từ VipPackage (nếu cần)
+                $vipPackage = VipPackage::where('vip_package_id', $vipPackageDetail->id)->first();
+
+                // Kiểm tra nếu gói VIP tồn tại
+                if ($vipPackage) {
+                    // Kiểm tra xem gói VIP còn thời gian sử dụng hay không
+                    $isActive = now()->lt($vipPackage->end_date); // So sánh ngày hiện tại với ngày hết hạn
+                    $vipPackageDetail->is_active = $isActive;
+                } else {
+                    // Nếu không tìm thấy gói VIP, có thể bạn muốn gán trạng thái không hoạt động
+                    $vipPackageDetail->is_active = false;
+                }
+
+                return $vipPackageDetail;
+            });
+
+            return view('admin.vip.show', compact('vipPackages', 'search'));
+        }
+
         // Nhận từ khóa tìm kiếm từ request
         $search = $request->input('search');
 
         // Lấy các gói VIP, lọc theo tên nếu có từ khóa tìm kiếm
         $vipPackages = VipPackageDetail::when($search, function ($query) use ($search) {
-                $query->where('package_type', 'like', '%' . $search . '%');
-            })
+            $query->where('package_type', 'like', '%' . $search . '%');
+        })
             ->orderBy('id', 'desc')
             ->paginate(10); // Phân trang 10 bản ghi
 
@@ -110,4 +144,49 @@ class AdminVipPackageDetailController extends Controller
 
         return redirect()->route('admin.vip.index')->with('success', 'Gói VIP đã được xóa thành công.');
     }
+
+    public function register($vipPackageId)
+    {
+        // Lấy thông tin gia sư hiện tại
+        $giaSu = GiaSu::where('user_id', auth()->user()->id)->first();
+
+        // Kiểm tra xem gia sư có đủ số dư không
+        $vipPackageDetail = VipPackageDetail::find($vipPackageId);
+
+        if ($giaSu && $vipPackageDetail) {
+            if ($giaSu->balance >= $vipPackageDetail->price) {
+                // Trừ số tiền của gia sư
+                $giaSu->balance -= $vipPackageDetail->price;
+                $giaSu->save();
+
+                // Lưu lịch sử giao dịch
+                Transaction::create([
+                    'user_id' => auth()->user()->id,
+                    'amount' => -$vipPackageDetail->price, // Số tiền bị trừ
+                    'description' => "Hệ thống trừ " . number_format($vipPackageDetail->price, 0, ',', '.') . " gia sư mua gói VIP: " . $vipPackageDetail->package_type
+                ]);
+
+                // Xóa hết các gói VIP cũ của gia sư (nếu có)
+                VipPackage::where('gia_su_id', $giaSu->id)->delete();
+
+                // Đăng ký gói VIP mới cho gia sư
+                $newVipPackage = VipPackage::create([
+                    'gia_su_id' => $giaSu->id,
+                    'package_type' => $vipPackageDetail->package_type,
+                    'start_date' => now(),
+                    'end_date' => now()->addDays($vipPackageDetail->duration_days),
+                    'vip_package_id' => $vipPackageDetail->id,
+                ]);
+
+                // Quay lại trang quản lý gói VIP với thông báo thành công
+                return redirect()->route('admin.vip.index')->with('success', 'Đăng ký gói VIP thành công và trừ tiền thành công!');
+            } else {
+                // Nếu gia sư không đủ số dư
+                return redirect()->route('admin.vip.index')->with('error', 'Số dư của bạn không đủ để mua gói VIP!');
+            }
+        }
+
+        return redirect()->route('admin.vip.index')->with('error', 'Không tìm thấy gia sư hoặc gói VIP!');
+    }
+
 }
