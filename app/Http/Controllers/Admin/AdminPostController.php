@@ -41,7 +41,7 @@ class AdminPostController extends Controller
             })
             ->orderBy('id', 'desc')
             ->paginate(10); // Điều chỉnh phân trang nếu cần
-
+            
         $checkVip = $this->checkVip();
 
         return view('admin.post.index', compact('posts', 'search', 'checkVip'));
@@ -53,7 +53,7 @@ class AdminPostController extends Controller
 
         // Kiểm tra nếu gia sư không tồn tại
         if (!$giaSu) {
-            return redirect()->route('admin.post.index')->with('error', 'Gia sư không tồn tại.');
+            return true;
         }
 
         // Lấy gói VIP của gia sư

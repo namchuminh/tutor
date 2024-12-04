@@ -17,30 +17,31 @@ class AdminVipPackageDetailController extends Controller
             // Nhận từ khóa tìm kiếm từ request
             $search = $request->input('search');
 
+            // Lấy danh sách các gói VIP
             $vipPackages = VipPackageDetail::when($search, function ($query) use ($search) {
                 $query->where('package_type', 'like', '%' . $search . '%');
             })
                 ->orderBy('id', 'desc')
                 ->paginate(10); // Phân trang 10 bản ghi
 
-            // Dùng map để thêm trạng thái is_active vào mỗi gói VIP
-            $vipPackages->getCollection()->transform(function ($vipPackageDetail) {
-                // Lấy thông tin gói VIP từ VipPackage (nếu cần)
-                $vipPackage = VipPackage::where('vip_package_id', $vipPackageDetail->id)->first();
+            // Lấy ID của gia sư hiện tại
+            $giaSuId = GiaSu::where('user_id', auth()->user()->id)->value('id');
 
-                // Kiểm tra nếu gói VIP tồn tại
-                if ($vipPackage) {
-                    // Kiểm tra xem gói VIP còn thời gian sử dụng hay không
-                    $isActive = now()->lt($vipPackage->end_date); // So sánh ngày hiện tại với ngày hết hạn
-                    $vipPackageDetail->is_active = $isActive;
-                } else {
-                    // Nếu không tìm thấy gói VIP, có thể bạn muốn gán trạng thái không hoạt động
-                    $vipPackageDetail->is_active = false;
-                }
+            // Duyệt qua từng gói VIP để kiểm tra trạng thái
+            $vipPackages->getCollection()->transform(function ($vipPackageDetail) use ($giaSuId) {
+                // Kiểm tra xem gói VIP này có đang được gia sư sử dụng hay không
+                $vipPackage = VipPackage::where('gia_su_id', $giaSuId)
+                    ->where('vip_package_id', $vipPackageDetail->id)
+                    ->where('end_date', '>', now()) // Chỉ lấy gói còn hạn sử dụng
+                    ->first();
+
+                // Đặt trạng thái is_active dựa trên điều kiện
+                $vipPackageDetail->is_active = $vipPackage ? true : false;
 
                 return $vipPackageDetail;
             });
 
+            // Trả về view với dữ liệu
             return view('admin.vip.show', compact('vipPackages', 'search'));
         }
 
@@ -182,7 +183,7 @@ class AdminVipPackageDetailController extends Controller
                 return redirect()->route('admin.vip.index')->with('success', 'Đăng ký gói VIP thành công và trừ tiền thành công!');
             } else {
                 // Nếu gia sư không đủ số dư
-                return redirect()->route('admin.vip.index')->with('error', 'Số dư của bạn không đủ để mua gói VIP!');
+                return redirect()->route('admin.deposit.index')->with('error', 'Số dư của bạn không đủ để mua gói VIP!');
             }
         }
 

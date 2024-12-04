@@ -45,13 +45,15 @@
             @php
                 $giaSu = \App\Models\GiaSu::where('user_id', auth()->user()->id)->first();
             @endphp
-            <ul class="navbar-nav ml-auto">
-                <!-- Messages Dropdown Menu -->
-                <li class="nav-item">
-                    
-                    <h3 class="card-title"><a href="{{ route('admin.profile.edit') }}"><i class="fa-regular fa-user"></i> {{ auth()->user()->name }}</a> <a href="{{ route('admin.deposit.index') }}">({{ number_format($giaSu->balance) }} VNĐ)</a></h3>
-                </li>
-            </ul>
+            @if (auth()->user()->role == "gia_su")
+                <ul class="navbar-nav ml-auto">
+                    <!-- Messages Dropdown Menu -->
+                    <li class="nav-item">
+                        <h3 class="card-title"><a href="{{ route('admin.profile.edit') }}"><i class="fa-regular fa-user"></i> {{ auth()->user()->name }}</a> <a href="{{ route('admin.deposit.index') }}">({{ number_format($giaSu->balance) }} VNĐ)</a></h3>
+                    </li>
+                </ul>
+            @endif
+
         </nav>
         <!-- /.navbar -->
 
