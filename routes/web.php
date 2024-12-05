@@ -88,6 +88,42 @@ Route::prefix('admin')->group(function () {
 });
 
 
+use App\Http\Controllers\Web\WebHomeController;
+use App\Http\Controllers\Web\WebPostController;
+use App\Http\Controllers\Web\WebSubjectController;
+use App\Http\Controllers\Web\WebTutorController;
+use App\Http\Controllers\Web\WebAuthController;
+
+
+Route::get('/', [WebHomeController::class, 'index'])->name('web.home.index');
+
+Route::get('/bai-viet/{slug}', [WebPostController::class, 'show'])->name('web.post.show');
+
+Route::get('/mon-hoc/{slug}', [WebSubjectController::class, 'show'])->name('web.subject.show');
+
+Route::get('/gia-su/{id}', [WebPostController::class, 'show'])->name('web.giasu.show');
+
+Route::get('/gia-su', [WebPostController::class, 'index'])->name('web.giasu.index');
+
+Route::get('/dang-nhap', action: [WebAuthController::class, 'login'])->name('web.auth.login')->middleware('notAuth');
+
+Route::post('/dang-nhap', action: [WebAuthController::class, 'submitLogin'])->name('web.auth.login.submit')->middleware('notAuth');
+
+Route::get('/dang-xuat', action: [WebAuthController::class, 'logout'])->name('web.auth.logout');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

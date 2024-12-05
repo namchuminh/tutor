@@ -14,4 +14,9 @@ class Subject extends Model
         'image',
         'slug'
     ];
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'subject_id');
+    }
 }
