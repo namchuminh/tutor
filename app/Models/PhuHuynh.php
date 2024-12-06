@@ -15,7 +15,8 @@ class PhuHuynh extends Model
         'balance',
         'phone_number',
         'address',
-        'status'
+        'status',
+        'avatar'
     ];
 
     public function user()

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Subject;
+use App\Models\Comment;
 
 class WebPostController extends Controller
 {
@@ -70,6 +71,13 @@ class WebPostController extends Controller
         ->take(3) // Giới hạn số lượng bài viết (ví dụ: 5 bài)
         ->get();
 
-        return view('web.post.show', compact('post', 'subjects', 'postsRandom', 'newPost', 'relatedPosts'));
+        $comments = Comment::with(['user.phuHuynh', 'user.giaSu'])
+        ->where('post_id', $post->id)
+        ->orderByDesc('id')
+        ->get();
+
+        $post_id = $post->id;
+
+        return view('web.post.show', compact('post', 'subjects', 'postsRandom', 'newPost', 'relatedPosts', 'comments', 'post_id'));
     }
 }

@@ -94,7 +94,7 @@ use App\Http\Controllers\Web\WebSubjectController;
 use App\Http\Controllers\Web\WebTutorController;
 use App\Http\Controllers\Web\WebAuthController;
 use App\Http\Controllers\Web\WebPhuHuynhController;
-
+use App\Http\Controllers\Web\WebCommentController;
 
 Route::get('/', [WebHomeController::class, 'index'])->name('web.home.index');
 
@@ -123,6 +123,7 @@ Route::get('/dang-ky', action: [WebAuthController::class, 'tutorRegister'])->nam
 Route::post('/dang-ky', action: [WebAuthController::class, 'tutorRegisterSubmit'])->name('web.auth.tutorRegister.submit')->middleware('notAuth');
 
 
+Route::post('/binh-luan', action: [WebCommentController::class, 'post'])->name('web.comment.post');
 
 
 

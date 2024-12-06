@@ -50,7 +50,7 @@
                 <!--author box-->
                 <div class="author-bio">
                     <div class="author-image mb-30">
-                        <a href="{{ route('web.giasu.show', $post->giaSu->user->id) }}"><img src="{{ empty($post->giaSu->avatar) ? asset('assets/imgs/avatar.png'): $post->giaSu->avatar }}" alt="" class="avatar"></a>
+                        <a href="{{ route('web.giasu.show', $post->giaSu->user->id) }}"><img src="{{ empty($post->giaSu->avatar) ? asset('assets/imgs/avatar.png'): asset('storage/'. $post->giaSu->avatar) }}" alt="" class="avatar"></a>
                     </div>
                     <div class="author-info">
                         <h3><span class="vcard author"><span class="fn"><a href="{{ route('web.giasu.show', $post->giaSu->user->id) }}" rel="author">{{ $post->giasu->user->name }}</a></span></span>
@@ -110,114 +110,76 @@
                 </div>
                 <!--Comments-->
                 <div class="comments-area">
-                    <h3 class="mb-30">03 Bình Luận</h3>
-                    <div class="comment-list">
-                        <div class="single-comment justify-content-between d-flex">
-                            <div class="user justify-content-between d-flex">
-                                <div class="thumb">
-                                    <img src="http://via.placeholder.com/223x223" alt="">
-                                </div>
-                                <div class="desc">
-                                    <p class="comment">
-                                        Vestibulum euismod, leo eget varius gravida, eros enim interdum urna, non rutrum enim ante quis metus. Duis porta ornare nulla ut bibendum
-                                    </p>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <h5>
-                                                <a href="#">Robert</a>
-                                            </h5>
-                                            <p class="date">December 4, 2020 at 3:12 pm </p>
+                    <h3 class="mb-30 tt-comment">{{ $comments->count() }} Bình Luận</h3>
+                    @foreach ($comments as $comment)
+                        <div class="comment-list" id="comments-list">
+                            <div class="single-comment justify-content-between d-flex">
+                                <div class="user justify-content-between d-flex">
+                                    @php
+                                        $avatar = null;
+
+                                        if ($comment->user->phuHuynh) {
+                                            $avatar = $comment->user->phuHuynh->avatar; // Avatar của phụ huynh
+                                        } elseif ($comment->user->giaSu) {
+                                            $avatar = $comment->user->giaSu->avatar; // Avatar của gia sư
+                                        }
+                                    @endphp
+                                    <div class="thumb">
+                                    <img style="width: 70px; height: 70px;" src="{{ empty($avatar) ? asset('assets/imgs/avatar.png') : asset('storage/' . $avatar) }}" alt="Avatar">
+                                    </div>
+                                    <div class="desc">
+                                        <p class="comment">
+                                            {{ $comment->content }}
+                                        </p>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                                <h5>
+                                                    <a href="#">{{ $comment->user->name }}</a>
+                                                </h5>
+                                            </div>
                                         </div>
-                                        <div class="reply-btn">
-                                            <a href="#" class="btn-reply text-uppercase">reply</a>
-                                        </div>
+                                        <p class="comment mt-3">
+                                            {{ $comment->created_at->format('d M Y') }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="comment-list">
-                        <div class="single-comment justify-content-between d-flex">
-                            <div class="user justify-content-between d-flex">
-                                <div class="thumb">
-                                    <img src="http://via.placeholder.com/223x223" alt="">
-                                </div>
-                                <div class="desc">
-                                    <p class="comment">
-                                        Sed ac lorem felis. Ut in odio lorem. Quisque magna dui, maximus ut commodo sed, vestibulum ac nibh. Aenean a tortor in sem tempus auctor
-                                    </p>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <h5>
-                                                <a href="#">Maria</a>
-                                            </h5>
-                                            <p class="date">December 4, 2020 at 3:12 pm </p>
-                                        </div>
-                                        <div class="reply-btn">
-                                            <a href="#" class="btn-reply text-uppercase">reply</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="comment-list">
-                        <div class="single-comment justify-content-between d-flex">
-                            <div class="user justify-content-between d-flex">
-                                <div class="thumb">
-                                    <img src="http://via.placeholder.com/223x223" alt="">
-                                </div>
-                                <div class="desc">
-                                    <p class="comment">
-                                        Donec in ullamcorper quam. Aenean vel nibh eu magna gravida fermentum. Praesent eget nisi pulvinar, sollicitudin eros vitae, tristique odio.
-                                    </p>
-                                    <div class="d-flex justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <h5>
-                                                <a href="#">Robert</a>
-                                            </h5>
-                                            <p class="date">December 4, 2020 at 3:12 pm </p>
-                                        </div>
-                                        <div class="reply-btn">
-                                            <a href="#" class="btn-reply text-uppercase">reply</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <!--comment form-->
-                <div class="comment-form">
-                    <h3 class="mb-30">Leave a Reply</h3>
-                    <form class="form-contact comment_form" action="#" id="commentForm">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment"></textarea>
+                @if (auth()->user())
+                    <div class="comment-form">
+                        <h3 class="mb-30">Bình Luận</h3>
+                        <form class="form-contact comment_form" action="#" id="commentForm">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control w-100" name="content" id="content" cols="30" rows="9" placeholder="Viết bình luận"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input value="{{ auth()->user()->name }}" disabled class="form-control" name="name" id="name" type="text" placeholder="Name">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input class="form-control" name="name" id="name" type="text" placeholder="Name">
-                                </div>
+                            <div class="form-group">
+                                <button type="submit" class="button button-contactForm">Đăng Bình Luận</button>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <input class="form-control" name="email" id="email" type="email" placeholder="Email">
-                                </div>
+                        </form>
+                    </div>
+                @else
+                    <div class="comment-form">
+                        <h3 class="mb-30">Bình Luận</h3>
+                        <form class="form-contact comment_form">
+                            <p class="mb-30">Đăng nhập để bình luận về bài viết của gia sư này!</p>
+                            <div class="form-group">
+                                <a href="{{ route('web.auth.login') }}" class="button button-contactForm">Đăng Nhập</a>
                             </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input class="form-control" name="website" id="website" type="text" placeholder="Website">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="button button-contactForm">Post Comment</button>
-                        </div>
-                    </form>
-                </div>
+                        </form>
+                    </div>
+                @endif
             </div>
             <!--col-lg-8-->
             <!--Right sidebar-->
@@ -225,7 +187,7 @@
                 <div class="widget-area pl-30">
                     <!--Widget about-->
                     <div class="sidebar-widget widget-about mb-50 pt-30 pr-30 pb-30 pl-30 background12 border-radius-5">
-                        <h5 class="mb-20">{{ $post->giasu->user->name }}<img class="about-author-img float-right ml-30" src="{{ empty($post->giaSu->avatar) ? asset('assets/imgs/avatar.png'): asset('storage/' . $post->giaSu->avatar) }}" alt=""></h5>
+                        <h5 class="mb-20">{{ $post->giasu->user->name }}<img class="about-author-img float-right ml-30" src="{{ empty($post->giaSu->avatar) ? asset('assets/imgs/avatar.png'): asset('storage/'. $post->giaSu->avatar) }}" alt=""></h5>
                         <p class="font-medium">{{ $post->giasu->bio }}</p>
                         <h6 class="mb-10">Khu Vực Gia Sư</h6>
                         <p class="font-medium">{{ $post->giasu->area }}</p>
@@ -363,4 +325,83 @@
         </div>
     </div>
 </div>
+@endsection
+@section('script')
+<script>
+    $(document).ready(function () {
+        $('#commentForm').on('submit', function (e) {
+            e.preventDefault(); // Ngừng reload trang khi submit form
+            var content = $('#content').val();
+            if (content === '') {
+                alert('Vui lòng nhập bình luận.');
+                return;
+            }
+
+            var post_id = '{{ $post_id }}'
+
+            $.ajax({
+                url: "{{ route('web.comment.post') }}",  // Đảm bảo route này đúng
+                method: 'POST',
+                data: {
+                    content: content,
+                    _token: "{{ csrf_token() }}",
+                    post_id
+                },
+                success: function (response) {
+                    if ($('#comments-list').length === 0) {
+                        $('.comments-area').append('<div class="comment-list" id="comments-list"></div>'); // Hoặc thêm vào vị trí khác trong DOM
+                    }
+
+                    // Xử lý nếu gửi thành công
+                    if (response.success) {
+                        // Tạo HTML cho bình luận mới
+                        var newCommentHtml = `
+                            <div class="comment-list" id="comment-${response.comment.id}">
+                                <div class="single-comment justify-content-between d-flex">
+                                    <div class="user justify-content-between d-flex">
+                                        <div class="thumb">
+                                            <img style="width: 70px; height: 70px;" src="${response.comment.avatar}" alt="Avatar">
+                                        </div>
+                                        <div class="desc">
+                                            <p class="comment">${response.comment.content}</p>
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex align-items-center">
+                                                    <h5><a href="#">${response.comment.user_name}</a></h5>
+                                                </div>
+                                            </div>
+                                            <p class="comment mt-3">${response.comment.created_at}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        // Thêm bình luận mới vào đầu danh sách
+                        $('#comments-list').prepend(newCommentHtml);
+
+                        // Lấy giá trị hiện tại của thẻ <h3> có class tt-comment
+                        var commentCount = parseInt($('.tt-comment').text()); // Lấy số bình luận hiện tại, loại bỏ phần "Bình Luận"
+
+                        // Cộng thêm 1
+                        commentCount += 1;
+
+                        // Cập nhật lại số bình luận trong thẻ <h3>
+                        $('.tt-comment').text(commentCount + ' Bình Luận');
+
+                        $('html, body').animate({
+                            scrollTop: $('#comments-list').offset().top - 200
+                        }, 500); // 500ms độ trễ cuộn
+
+                        // Reset form
+                        $('#content').val('');
+                    }
+                },
+                error: function (errr) {
+                    console.log(errr)
+                    alert('Đã có lỗi xảy ra. Vui lòng thử lại.');
+                }
+            });
+        });
+    });
+</script>
 @endsection

@@ -25,7 +25,7 @@
                                     </h6>
                                     <!-- Hiển thị hình ảnh Subject -->
                                     <div class="img-hover-scale border-radius-5 hover-box-shadow">
-                                        <a href="#">
+                                        <a href="{{ route('web.subject.show', $subject->slug) }}">
                                             <img style="height: 197px; width: 100%;" class="border-radius-5"
                                                 src="{{ asset('storage/' . $subject->image) ?? 'https://www.contentviewspro.com/wp-content/uploads/2017/07/default_image.png' }}"
                                                 alt="subject-image">
