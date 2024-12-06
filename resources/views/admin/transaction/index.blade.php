@@ -46,7 +46,7 @@
                     <tbody>
                         @forelse($transactions as $transaction)
                             <tr>
-                                <td>{{ $loop->iteration + 1 }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $transaction->user->name }}</td>
                                 <td>{{ $transaction->user->email }}</td>
                                 <td>{{ number_format($transaction->amount, 0, ',', '.') }} VNĐ</td>

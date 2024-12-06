@@ -110,7 +110,19 @@
                                         </a>
                                         @if (Auth::user()->role == "phu_huynh")
                                             <div id="userMenuDropdow" class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-                                                <a class="dropdown-item" href="{{ route('web.phuhuynh.show') }}"><i class="fa fa-user"></i> Cá Nhân</a>
+                                                @php
+                                                    $phuHuynhCommon = \App\Models\PhuHuynh::where('user_id', auth()->user()->id)->first();
+                                                @endphp
+                                                <a class="dropdown-item text-center" href="#">
+                                                    {{ number_format($phuHuynhCommon->balance) }} VNĐ
+                                                </a>
+                                                <a class="dropdown-item" href="{{ route('web.phuhuynh.pay') }}">
+                                                    <i class="fa fa-dollar-sign"></i> Nạp Tiền
+                                                </a>
+                                                
+                                                <a class="dropdown-item" href="{{ route('web.phuhuynh.show') }}">
+                                                    <i class="fa fa-user"></i> Cá Nhân
+                                                </a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="{{ route('web.auth.logout') }}"><i class="fa fa-sign-out-alt"></i> Đăng Xuất</a>
                                             </div>

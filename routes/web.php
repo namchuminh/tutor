@@ -106,6 +106,8 @@ Route::get('/gia-su/{id}', [WebTutorController::class, 'show'])->name('web.giasu
 
 Route::get('/gia-su', [WebPostController::class, 'index'])->name('web.giasu.index');
 
+Route::post('/gia-su/so-dien-thoai', [WebTutorController::class, 'phone'])->name('web.giasu.phone');
+
 Route::get('/dang-nhap', action: [WebAuthController::class, 'login'])->name('web.auth.login')->middleware('notAuth');
 
 Route::post('/dang-nhap', action: [WebAuthController::class, 'submitLogin'])->name('web.auth.login.submit')->middleware('notAuth');
@@ -117,6 +119,12 @@ Route::get('/phu-huynh/dang-ky', action: [WebAuthController::class, 'parentRegis
 Route::post('/phu-huynh/dang-ky', action: [WebAuthController::class, 'parentRegisterSubmit'])->name('web.auth.parentRegister.submit')->middleware('notAuth');
 
 Route::get('/phu-huynh', action: [WebPhuHuynhController::class, 'show'])->name('web.phuhuynh.show');
+
+Route::get('/phu-huynh/nap-tien', [WebPhuHuynhController::class, 'pay'])->name('web.phuhuynh.pay');
+
+Route::post('/phu-huynh/nap-tien', [WebPhuHuynhController::class, 'payCheck'])->name('web.phuhuynh.payCheck');
+
+Route::get('/checkVnpay', [WebPhuHuynhController::class, 'checkVnpay'])->name('web.phuhuynh.checkVnpay');
 
 Route::get('/dang-ky', action: [WebAuthController::class, 'tutorRegister'])->name('web.auth.tutorRegister')->middleware('notAuth');
 

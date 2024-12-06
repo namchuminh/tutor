@@ -32,7 +32,7 @@
                     @foreach ($posts as $post)
                         <article class="col-lg-6 mb-50 animate-conner">
                             <div class="post-thumb d-flex mb-30 border-radius-5 img-hover-scale animate-conner-box">
-                                <a href="single.html">
+                                <a href="{{ route('web.post.show', $post->slug) }}">
                                     <img src="{{ asset('storage/' . $post->image) }}" alt="" style="width: 370px; height: 259px;">
                                 </a>
                                 <ul class="social-share">
@@ -134,7 +134,7 @@
                                         <li class="mb-30">
                                             <div class="d-flex">
                                                 <div class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
-                                                    <a href="single.html">
+                                                    <a href="{{ route('web.post.show', $post->slug) }}">
                                                         <img src="{{ asset('storage/' . $post->image) }}" alt="" style="width: 130px; height: 130px;">
                                                     </a>
                                                 </div>

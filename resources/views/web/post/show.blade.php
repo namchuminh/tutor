@@ -1,6 +1,10 @@
 @extends('Web.layouts.app')
 @section('title', 'Tìm Gia Sư')
 @section('content')
+@php
+    $phone = $post->giasu->user->phone;
+    $formattedPhone = substr($phone, 0, 2) . str_repeat('*', strlen($phone) - 4) . substr($phone, -2);
+@endphp
 <div class="main_content sidebar_right pb-50 pt-50">
     <div class="container">
         <div class="row">
@@ -58,7 +62,7 @@
                         <h5>Khu Vực Gia Sư</h5>
                         <div class="author-description"> <i class="ti-location-pin"></i> {{ $post->giasu->area }}</div>
                         <h5>Số Điện Thoại</h5>
-                        <div class="author-description"> <i class="fas fa-phone"></i> {{ $post->giasu->user->phone }} <a href="#" class="author-bio-link">Xem Đầy Đủ</a></div>
+                        <div class="author-description phone-text1"> <i class="fas fa-phone"></i> {{ $formattedPhone }} <a href="#" class="author-bio-link show-phone">Xem Đầy Đủ</a></div>
                     </div>
                 </div>
                 <!--related posts-->
@@ -187,14 +191,16 @@
                 <div class="widget-area pl-30">
                     <!--Widget about-->
                     <div class="sidebar-widget widget-about mb-50 pt-30 pr-30 pb-30 pl-30 background12 border-radius-5">
-                        <h5 class="mb-20">{{ $post->giasu->user->name }}<img class="about-author-img float-right ml-30" src="{{ empty($post->giaSu->avatar) ? asset('assets/imgs/avatar.png'): asset('storage/'. $post->giaSu->avatar) }}" alt=""></h5>
+                        <h5 class="mb-20">
+                            <a href="{{ route('web.giasu.show', $post->giaSu->user->id) }}">{{ $post->giasu->user->name }}</a>
+                        <img class="about-author-img float-right ml-30" src="{{ empty($post->giaSu->avatar) ? asset('assets/imgs/avatar.png'): asset('storage/'. $post->giaSu->avatar) }}" alt=""></h5>
                         <p class="font-medium">{{ $post->giasu->bio }}</p>
                         <h6 class="mb-10">Khu Vực Gia Sư</h6>
                         <p class="font-medium">{{ $post->giasu->area }}</p>
                         <h6 class="mb-10">Số Điện Thoại</h6>
-                        <p class="font-medium">{{ $post->giasu->user->phone }}</p>
+                        <p class="font-medium phone-text">{{ $formattedPhone }}</p>
                         <p>
-                            <a class="readmore-btn font-small text-uppercase font-weight-ultra" href="#">Xem Liên Hệ<i class="ti-arrow-right ml-5"></i></a>
+                            <a class="readmore-btn font-small text-uppercase font-weight-ultra show-phone" href="#">Xem Đầy Đủ<i class="ti-arrow-right ml-5"></i></a>
                         </p>
                     </div>
                     <!--Widget social-->
@@ -325,9 +331,23 @@
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 @endsection
 @section('script')
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
+    function formatPhoneNumber(phoneNumber) {
+        // Loại bỏ tất cả ký tự không phải số
+        phoneNumber = phoneNumber.replace(/\D/g, '');
+
+        // Kiểm tra độ dài số điện thoại
+        if (phoneNumber.length === 10) {
+            return phoneNumber.replace(/(\d{4})(\d{3})(\d{3})/, '$1.$2.$3');
+        }
+
+        // Trả về số gốc nếu không hợp lệ
+        return phoneNumber;
+    }
     $(document).ready(function () {
         $('#commentForm').on('submit', function (e) {
             e.preventDefault(); // Ngừng reload trang khi submit form
@@ -394,6 +414,39 @@
 
                         // Reset form
                         $('#content').val('');
+                    }
+                },
+                error: function (errr) {
+                    console.log(errr)
+                    alert('Đã có lỗi xảy ra. Vui lòng thử lại.');
+                }
+            });
+        });
+
+        $(".show-phone").click(function(e) {
+            e.preventDefault();
+            var user_id = '{{ $user_id }}';
+
+            $.ajax({
+                url: "{{ route('web.giasu.phone') }}",  // Đảm bảo route này đúng
+                method: 'POST',
+                data: {
+                    user_id,
+                    _token: "{{ csrf_token() }}",
+                },
+                success: function (response) {
+                    if(!isNaN(response)){
+                        $(".phone-text1").html(` <i class="fas fa-phone"></i> ${formatPhoneNumber(response)}`);
+                        $(".phone-text").html(formatPhoneNumber(response));
+                        $(".show-phone").hide();
+                    }else{
+                        Toastify({
+                            text: response,
+                            duration: 5000, // thời gian hiển thị (ms)
+                            close: true, // nút đóng
+                            gravity: "bottom", // vị trí: "top" hoặc "bottom"
+                            position: "center", // "left", "center", "right"
+                        }).showToast();
                     }
                 },
                 error: function (errr) {

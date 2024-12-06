@@ -77,7 +77,8 @@ class WebPostController extends Controller
         ->get();
 
         $post_id = $post->id;
+        $user_id = $post->user_id;
 
-        return view('web.post.show', compact('post', 'subjects', 'postsRandom', 'newPost', 'relatedPosts', 'comments', 'post_id'));
+        return view('web.post.show', compact('post', 'subjects', 'postsRandom', 'newPost', 'relatedPosts', 'comments', 'post_id', 'user_id'));
     }
 }

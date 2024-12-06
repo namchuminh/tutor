@@ -23,7 +23,7 @@ class AdminTransactionController extends Controller
                 });
             })
             ->orderBy('created_at', 'desc')
-            ->paginate(10); // Phân trang mỗi trang 10 dòng
+            ->paginate(50); // Phân trang mỗi trang 10 dòng
 
         // Trả về view với dữ liệu
         return view('admin.transaction.index', compact('transactions', 'search'));
