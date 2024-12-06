@@ -108,11 +108,20 @@
                                             <i class="fa fa-user"></i>
                                             <span>{{ Auth::user()->name }}</span>
                                         </a>
-                                        <div id="userMenuDropdow" class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-                                            <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Gia Sư</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="{{ route('web.auth.logout') }}"><i class="fa fa-sign-out-alt"></i> Đăng Xuất</a>
-                                        </div>
+                                        @if (Auth::user()->role == "phu_huynh")
+                                            <div id="userMenuDropdow" class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+                                                <a class="dropdown-item" href="{{ route('web.phuhuynh.show') }}"><i class="fa fa-user"></i> Cá Nhân</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="{{ route('web.auth.logout') }}"><i class="fa fa-sign-out-alt"></i> Đăng Xuất</a>
+                                            </div>
+                                        @else
+                                            <div id="userMenuDropdow" class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+                                                <a class="dropdown-item" href="{{ route('web.giasu.show', Auth::user()->id) }}"><i class="fa fa-user"></i> Trang Cá Nhân</a>
+                                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="fa fa-chart-line"></i> Trang Quản Lý</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="{{ route('web.auth.logout') }}"><i class="fa fa-sign-out-alt"></i> Đăng Xuất</a>
+                                            </div>
+                                        @endif
                                     </div>
                                 @else
                                     <div class="user-account d-inline-block font-small">
@@ -130,7 +139,7 @@
                                         <div id="userMenuDropdow" class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
                                             <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Làm Gia Sư</a>
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Làm Phụ Huynh</a>
+                                            <a class="dropdown-item" href="{{ route('web.auth.parentRegister') }}"><i class="fa fa-users"></i> Làm Phụ Huynh</a>
                                         </div>
                                     </div>
                                 @endif

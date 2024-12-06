@@ -19,11 +19,9 @@ class NotAuth
         if (auth()->check()) {
             if(auth()->user()->role == 'admin'){
                 return redirect()->route('admin.dashboard');
-            }else{
-                return redirect()->route('admin.dashboard')->withErrors(['error' => "Bạn không được phép truy cập trang này khi đã đăng nhập!"]);
+            }else if(auth()->user()->role == 'phu_huynh'){
+                return redirect()->route('web.phuhuynh.show')->withErrors(['error' => "Bạn không được phép truy cập trang này khi đã đăng nhập!"]);
             }
-
-            
         }
         return $next($request);
     }

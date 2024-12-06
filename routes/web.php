@@ -93,6 +93,7 @@ use App\Http\Controllers\Web\WebPostController;
 use App\Http\Controllers\Web\WebSubjectController;
 use App\Http\Controllers\Web\WebTutorController;
 use App\Http\Controllers\Web\WebAuthController;
+use App\Http\Controllers\Web\WebPhuHuynhController;
 
 
 Route::get('/', [WebHomeController::class, 'index'])->name('web.home.index');
@@ -101,7 +102,7 @@ Route::get('/bai-viet/{slug}', [WebPostController::class, 'show'])->name('web.po
 
 Route::get('/mon-hoc/{slug}', [WebSubjectController::class, 'show'])->name('web.subject.show');
 
-Route::get('/gia-su/{id}', [WebPostController::class, 'show'])->name('web.giasu.show');
+Route::get('/gia-su/{id}', [WebTutorController::class, 'show'])->name('web.giasu.show');
 
 Route::get('/gia-su', [WebPostController::class, 'index'])->name('web.giasu.index');
 
@@ -111,6 +112,11 @@ Route::post('/dang-nhap', action: [WebAuthController::class, 'submitLogin'])->na
 
 Route::get('/dang-xuat', action: [WebAuthController::class, 'logout'])->name('web.auth.logout');
 
+Route::get('/phu-huynh/dang-ky', action: [WebAuthController::class, 'parentRegister'])->name('web.auth.parentRegister')->middleware('notAuth');
+
+Route::post('/phu-huynh/dang-ky', action: [WebAuthController::class, 'parentRegisterSubmit'])->name('web.auth.parentRegister.submit')->middleware('notAuth');
+
+Route::get('/phu-huynh', action: [WebPhuHuynhController::class, 'show'])->name('web.phuhuynh.show');
 
 
 

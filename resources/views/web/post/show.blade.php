@@ -50,7 +50,7 @@
                 <!--author box-->
                 <div class="author-bio">
                     <div class="author-image mb-30">
-                        <a href="{{ route('web.giasu.show', $post->giaSu->user->id) }}"><img src="http://via.placeholder.com/223x223" alt="" class="avatar"></a>
+                        <a href="{{ route('web.giasu.show', $post->giaSu->user->id) }}"><img src="{{ empty($post->giaSu->avatar) ? asset('assets/imgs/avatar.png'): $post->giaSu->avatar }}" alt="" class="avatar"></a>
                     </div>
                     <div class="author-info">
                         <h3><span class="vcard author"><span class="fn"><a href="{{ route('web.giasu.show', $post->giaSu->user->id) }}" rel="author">{{ $post->giasu->user->name }}</a></span></span>
@@ -58,7 +58,7 @@
                         <h5>Khu Vực Gia Sư</h5>
                         <div class="author-description"> <i class="ti-location-pin"></i> {{ $post->giasu->area }}</div>
                         <h5>Số Điện Thoại</h5>
-                        <div class="author-description"> <i class="fas fa-phone"></i> {{ $post->giasu->phone }} <a href="#" class="author-bio-link">Xem Đầy Đủ</a></div>
+                        <div class="author-description"> <i class="fas fa-phone"></i> {{ $post->giasu->user->phone }} <a href="#" class="author-bio-link">Xem Đầy Đủ</a></div>
                     </div>
                 </div>
                 <!--related posts-->
@@ -225,16 +225,14 @@
                 <div class="widget-area pl-30">
                     <!--Widget about-->
                     <div class="sidebar-widget widget-about mb-50 pt-30 pr-30 pb-30 pl-30 background12 border-radius-5">
-                        <h5 class="mb-20">Hello, I'm Robert<img class="about-author-img float-right ml-30" src="http://via.placeholder.com/223x223" alt=""></h5>
-                        <p class="font-medium">You should write because you love the shape of stories and sentences and the creation of different words on a page. Writing comes from reading, and reading is the finest teacher of how to write.</p>
-                        <ul class="header-social-network d-inline-block list-inline color-white mb-20">
-                            <li class="list-inline-item"><a class="social-icon facebook-icon text-xs-center" target="_blank" href="#"><i class="ti-facebook"></i></a></li>
-                            <li class="list-inline-item"><a class="social-icon twitter-icon text-xs-center" target="_blank" href="#"><i class="ti-twitter-alt"></i></a></li>
-                            <li class="list-inline-item"><a class="social-icon pinterest-icon text-xs-center" target="_blank" href="#"><i class="ti-pinterest"></i></a></li>
-                            <li class="list-inline-item"><a class="social-icon instagram-icon text-xs-center" target="_blank" href="#"><i class="ti-instagram"></i></a></li>
-                        </ul>
+                        <h5 class="mb-20">{{ $post->giasu->user->name }}<img class="about-author-img float-right ml-30" src="{{ empty($post->giaSu->avatar) ? asset('assets/imgs/avatar.png'): $post->giaSu->avatar }}" alt=""></h5>
+                        <p class="font-medium">{{ $post->giasu->bio }}</p>
+                        <h6 class="mb-10">Khu Vực Gia Sư</h6>
+                        <p class="font-medium">{{ $post->giasu->area }}</p>
+                        <h6 class="mb-10">Số Điện Thoại</h6>
+                        <p class="font-medium">{{ $post->giasu->user->phone }}</p>
                         <p>
-                            <a class="readmore-btn font-small text-uppercase font-weight-ultra" href="contact.html">Contact me<i class="ti-arrow-right ml-5"></i></a>
+                            <a class="readmore-btn font-small text-uppercase font-weight-ultra" href="#">Xem Liên Hệ<i class="ti-arrow-right ml-5"></i></a>
                         </p>
                     </div>
                     <!--Widget social-->

@@ -18,7 +18,9 @@ class GiaSu extends Model
         'post_status',
         'years_of_experience',
         'education_level',
-        'balance'
+        'balance',
+        'bio',
+        'avatar'
     ];
 
     public function user()
