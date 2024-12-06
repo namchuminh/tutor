@@ -118,6 +118,9 @@ Route::post('/phu-huynh/dang-ky', action: [WebAuthController::class, 'parentRegi
 
 Route::get('/phu-huynh', action: [WebPhuHuynhController::class, 'show'])->name('web.phuhuynh.show');
 
+Route::get('/dang-ky', action: [WebAuthController::class, 'tutorRegister'])->name('web.auth.tutorRegister')->middleware('notAuth');
+
+Route::post('/dang-ky', action: [WebAuthController::class, 'tutorRegisterSubmit'])->name('web.auth.tutorRegister.submit')->middleware('notAuth');
 
 
 

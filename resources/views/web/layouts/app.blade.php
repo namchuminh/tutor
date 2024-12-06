@@ -137,7 +137,7 @@
                                             <span>Đăng Ký</span>
                                         </a>
                                         <div id="userMenuDropdow" class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
-                                            <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Làm Gia Sư</a>
+                                            <a class="dropdown-item" href="{{ route('web.auth.tutorRegister') }}"><i class="fa fa-user"></i> Làm Gia Sư</a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="{{ route('web.auth.parentRegister') }}"><i class="fa fa-users"></i> Làm Phụ Huynh</a>
                                         </div>

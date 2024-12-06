@@ -8,7 +8,7 @@
                 <!--author box-->
                 <div class="author-bio mb-50" style="margin: 0; padding: 50px; border: 0; background: #f4f5f9; border-radius: 5px;">
                     <div class="author-image mb-30">
-                        <a href="{{ route('web.giasu.show',$giasu->user->id ) }}"><img src="{{ empty($giasu->avatar) ? asset('assets/imgs/avatar.png'): $giasu->avatar }}" alt="" class="avatar"></a>
+                        <a href="{{ route('web.giasu.show',$giasu->user->id ) }}"><img src="{{ empty($giasu->avatar) ? asset('assets/imgs/avatar.png'): asset('storage/' . $giasu->avatar) }}" alt="" class="avatar"></a>
                     </div>
                     <div class="author-info">
                         <h3><span class="vcard author"><span class="fn"><a href="{{ route('web.giasu.show',$giasu->user->id ) }}" title="Posts by Robert" rel="author">{{ $giasu->user->name }}</a></span></span>

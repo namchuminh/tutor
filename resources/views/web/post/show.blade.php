@@ -225,7 +225,7 @@
                 <div class="widget-area pl-30">
                     <!--Widget about-->
                     <div class="sidebar-widget widget-about mb-50 pt-30 pr-30 pb-30 pl-30 background12 border-radius-5">
-                        <h5 class="mb-20">{{ $post->giasu->user->name }}<img class="about-author-img float-right ml-30" src="{{ empty($post->giaSu->avatar) ? asset('assets/imgs/avatar.png'): $post->giaSu->avatar }}" alt=""></h5>
+                        <h5 class="mb-20">{{ $post->giasu->user->name }}<img class="about-author-img float-right ml-30" src="{{ empty($post->giaSu->avatar) ? asset('assets/imgs/avatar.png'): asset('storage/' . $post->giaSu->avatar) }}" alt=""></h5>
                         <p class="font-medium">{{ $post->giasu->bio }}</p>
                         <h6 class="mb-10">Khu Vực Gia Sư</h6>
                         <p class="font-medium">{{ $post->giasu->area }}</p>

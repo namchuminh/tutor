@@ -34,7 +34,7 @@
                                 <button type="submit" class="btn btn-fill-out btn-block" name="login">Đăng Nhập</button>
                             </div>
                         </form>
-                        <div class="text-muted text-center">Chưa có tài khoản? <a href="signup.html">Đăng Ký Ngay</a></div>
+                        <div class="text-muted text-center">Quên mật khẩu? <a href="#">Khôi Phục Ngay</a></div>
                     </div>
                 </div>
             </div>
