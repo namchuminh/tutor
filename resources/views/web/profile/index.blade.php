@@ -18,8 +18,17 @@
                         <h5>Khu Vực Gia Sư</h5>
                         <div class="author-description"><i class="ti-location-pin"></i> {{ $giasu->area }}</div>
                         <h5>Số Điện Thoại</h5>
-                        <div class="author-description"><i class="fas fa-phone"></i> {{ $giasu->user->phone }}</div>
-                        <a href="#" class="author-bio-link mb-15">Xem liên hệ</a>
+                        @php
+                            $phone = $giasu->user->phone;
+                            $formattedPhone = substr($phone, 0, 2) . str_repeat('*', strlen($phone) - 4) . substr($phone, -2);
+                        @endphp
+                        <div class="author-description phone-text1"><i class="fas fa-phone"></i> {{ $formattedPhone }}</div>
+                        @if (auth()->user() && (auth()->user()->id == $giasu->user->id))
+                            <a href="{{ route('admin.dashboard') }}" class="author-bio-link mb-15">truy cập quản lý</a>
+                        @else
+                            <a href="#" class="author-bio-link mb-15 show-phone">Xem liên hệ</a>
+                            <a href="#" class="author-bio-link mb-15">đánh giá</a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -153,4 +162,53 @@
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+@endsection
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+    function formatPhoneNumber(phoneNumber) {
+        // Loại bỏ tất cả ký tự không phải số
+        phoneNumber = phoneNumber.replace(/\D/g, '');
+
+        // Kiểm tra độ dài số điện thoại
+        if (phoneNumber.length === 10) {
+            return phoneNumber.replace(/(\d{4})(\d{3})(\d{3})/, '$1.$2.$3');
+        }
+
+        // Trả về số gốc nếu không hợp lệ
+        return phoneNumber;
+    }
+    $(document).ready(function () {
+        $(".show-phone").click(function(e) {
+            e.preventDefault();
+            var user_id = '{{ $giasu->user->id }}';
+
+            $.ajax({
+                url: "{{ route('web.giasu.phone') }}",  // Đảm bảo route này đúng
+                method: 'POST',
+                data: {
+                    user_id,
+                    _token: "{{ csrf_token() }}"                },
+                success: function (response) {
+                    if(!isNaN(response)){
+                        $(".phone-text1").html(` <i class="fas fa-phone"></i> ${formatPhoneNumber(response)}`);
+                        $(".show-phone").hide();
+                    }else{
+                        Toastify({
+                            text: response,
+                            duration: 5000, // thời gian hiển thị (ms)
+                            close: true, // nút đóng
+                            gravity: "bottom", // vị trí: "top" hoặc "bottom"
+                            position: "center", // "left", "center", "right"
+                        }).showToast();
+                    }
+                },
+                error: function (errr) {
+                    console.log(errr)
+                }
+            });
+        });
+    });
+</script>
 @endsection

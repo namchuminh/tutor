@@ -45,9 +45,13 @@ class WebAuthController extends Controller
                         $post = Post::findOrFail($post_id);
                         Session::forget('post_id');
                         return redirect()->route('web.post.show', $post->slug);
-                    }else{
-                        return redirect()->intended('/phu-huynh');
+                    }else if(Session::has('user_id')){
+                        $user_id = Session::get('user_id');
+                        Session::forget('user_id');
+                        return redirect()->route('web.giasu.show', $user_id);
                     }
+
+                    return redirect()->intended('/phu-huynh');
                 }
             } else if(auth()->user()->role == 'gia_su') {
                 return redirect()->route('web.giasu.show', auth()->user()->id);

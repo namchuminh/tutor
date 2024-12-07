@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Session;
 class WebTutorController extends Controller
 {
     public function show(Request $request, $id){
+        Session::forget('user_id');
+        
         $giasu = GiaSu::with('user')->where('user_id', $id)->first();
 
         $posts = Post::with(['giaSu.user', 'subject'])
@@ -39,7 +41,12 @@ class WebTutorController extends Controller
         ]);
 
         if(!auth()->user()){
-            Session::put('post_id', $request->post_id);
+            if(isset($request->post_id) && !empty($request->post_id)){
+                Session::put('post_id', $request->post_id);
+            }else if(!isset($request->post_id) && isset($request->user_id)){
+                Session::put('user_id', $request->user_id);
+            }
+            
             echo "Vui lòng đăng nhập để xem thông tin liên hệ!";
             return;
         }

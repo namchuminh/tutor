@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Subject;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Session;
 
 class WebPostController extends Controller
 {
@@ -37,6 +38,7 @@ class WebPostController extends Controller
     }
 
     public function show($slug){
+        Session::forget('post_id');
         // Tìm bài viết theo slug
         $post = Post::with(['giaSu.user', 'subject'])
             ->where('slug', $slug)
