@@ -155,13 +155,13 @@
                                 <div class="nav nav-tabs" role="tablist">
                                     <a class="nav-item nav-link active" id="nav-popular-tab" data-toggle="tab"
                                         href="#nav-popular" role="tab" aria-controls="nav-popular"
-                                        aria-selected="true">Đề Xuất</a>
+                                        aria-selected="true">Nổi Bật</a>
                                     <a class="nav-item nav-link" id="nav-trending-tab" data-toggle="tab"
                                         href="#nav-trending" role="tab" aria-controls="nav-trending"
-                                        aria-selected="false">Đánh Giá</a>
+                                        aria-selected="false">Đề Xuất</a>
                                     <a class="nav-item nav-link" id="nav-comment-tab" data-toggle="tab"
                                         href="#nav-comment" role="tab" aria-controls="nav-comment"
-                                        aria-selected="false">Bình Luận</a>
+                                        aria-selected="false">Mới Nhất</a>
                                 </div>
                             </nav>
                             <div class="tab-content">
@@ -170,94 +170,31 @@
                                     aria-labelledby="nav-popular-tab">
                                     <div class="post-block-list post-module-1">
                                         <ul class="list-post">
-                                            <li class="mb-30">
-                                                <div class="d-flex">
-                                                    <div
-                                                        class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
-                                                        <a href="single.html">
-                                                            <img src="http://via.placeholder.com/500x500" alt="">
-                                                        </a>
-                                                    </div>
-                                                    <div class="post-content media-body">
-                                                        <div class="entry-meta meta-0 mb-10">
-                                                            <a href="category.html"><span
-                                                                    class="post-in background5 color-white font-small">World</span></a>
+                                            @foreach ($topPosts as $post)
+                                                <li class="mb-30">
+                                                    <div class="d-flex">
+                                                        <div
+                                                            class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
+                                                            <a href="{{ route('web.post.show', $post->slug) }}">
+                                                                <img src="{{ asset('storage/' . $post->image) }}" style="width: 130px; height: 130px;" alt="">
+                                                            </a>
                                                         </div>
-                                                        <h6 class="post-title mb-10 text-limit-2-row">Traveling Tends to
-                                                            Magnify All Human Emotions</h6>
-                                                        <div class="entry-meta meta-1 font-x-small color-grey">
-                                                            <span class="post-on">25 April</span>
-                                                            <span class="hit-count has-dot">26k Views</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="mb-30">
-                                                <div class="d-flex">
-                                                    <div
-                                                        class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
-                                                        <a href="single.html">
-                                                            <img src="http://via.placeholder.com/500x500" alt="">
-                                                        </a>
-                                                    </div>
-                                                    <div class="post-content media-body">
-                                                        <div class="entry-meta meta-0 mb-10">
-                                                            <a href="category.html"><span
-                                                                    class="post-in background7 color-white font-small">Films</span></a>
-                                                        </div>
-                                                        <h6 class="post-title mb-10 text-limit-2-row">The Luxury Of
-                                                            Traveling With Yacht</h6>
-                                                        <div class="entry-meta meta-1 font-x-small color-grey mt-10">
-                                                            <span class="post-on">25 April</span>
-                                                            <span class="hit-count has-dot">37k Views</span>
+                                                        <div class="post-content media-body">
+                                                            <div class="entry-meta meta-0 mb-10">
+                                                                <a href="{{ route('web.subject.show', $post->subject->slug) }}">
+                                                                    <span
+                                                                        class="post-cat background2 color-white">{{ $post->subject->name ?? 'Chưa có môn học' }}</span>
+                                                                </a>
+                                                            </div>
+                                                            <h6 class="post-title mb-10 text-limit-2-row">{{ $post->title }}</h6>
+                                                            <div class="entry-meta meta-1 font-x-small color-grey">
+                                                                <span class="post-on">{{ $post->created_at->format('d M Y') }}</span>
+                                                                <span class="hit-count has-dot">{{ $post->views }} lượt xem</span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </li>
-                                            <li class="mb-30">
-                                                <div class="d-flex">
-                                                    <div
-                                                        class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
-                                                        <a href="single.html">
-                                                            <img src="http://via.placeholder.com/500x500" alt="">
-                                                        </a>
-                                                    </div>
-                                                    <div class="post-content media-body">
-                                                        <div class="entry-meta meta-0 mb-10">
-                                                            <a href="category.html"><span
-                                                                    class="post-in background2 color-white font-small">Travel</span></a>
-                                                        </div>
-                                                        <h6 class="post-title mb-10 text-limit-2-row">Last Minute
-                                                            Festive Packages From Superbreak</h6>
-                                                        <div class="entry-meta meta-1 font-x-small color-grey mt-10">
-                                                            <span class="post-on">25 April</span>
-                                                            <span class="hit-count has-dot">54k Views</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="d-flex">
-                                                    <div
-                                                        class="post-thumb d-flex mr-15 border-radius-5 img-hover-scale">
-                                                        <a href="single.html">
-                                                            <img src="http://via.placeholder.com/500x500" alt="">
-                                                        </a>
-                                                    </div>
-                                                    <div class="post-content media-body">
-                                                        <div class="entry-meta meta-0 mb-10">
-                                                            <a href="category.html"><span
-                                                                    class="post-in background3 color-white font-small">Beauty</span></a>
-                                                        </div>
-                                                        <h6 class="post-title mb-10 text-limit-2-row">Less Is More:
-                                                            Diving into Minimalism in Photography</h6>
-                                                        <div class="entry-meta meta-1 font-x-small color-grey mt-10">
-                                                            <span class="post-on">25 April</span>
-                                                            <span class="hit-count has-dot">126k Views</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>

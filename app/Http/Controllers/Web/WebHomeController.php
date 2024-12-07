@@ -20,6 +20,12 @@ class WebHomeController extends Controller
         ->orderBy('created_at', 'desc') // Sắp xếp theo thời gian tạo
         ->paginate(10); // Mỗi trang hiển thị 10 bài
 
-        return view('web.home.index', compact('subjects', 'posts'));
+        $topPosts = Post::with(['giaSu.user', 'subject']) // Load các mối quan hệ cần thiết
+        ->where('status', 'accept') // Điều kiện: chỉ lấy bài viết được duyệt
+        ->orderBy('views', 'desc')  // Sắp xếp theo lượt xem giảm dần
+        ->take(10)                  // Lấy 10 bài viết đầu tiên
+        ->get();
+
+        return view('web.home.index', compact('subjects', 'posts', 'topPosts'));
     }
 }
