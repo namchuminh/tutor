@@ -18,7 +18,8 @@ class Post extends Model
         'fee',
         'image',
         'slug',
-        'status'
+        'status',
+        'views'
     ];
 
     public function giaSu()

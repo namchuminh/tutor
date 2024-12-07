@@ -44,6 +44,10 @@ class WebPostController extends Controller
             ->where('slug', $slug)
             ->where('status', 'accept') // Có thể kiểm tra status nếu cần
             ->first(); // Lấy bài viết đầu tiên khớp với slug
+            
+        if ($post) {
+            $post->increment('views'); // Tăng trường `views` thêm 1
+        }
 
         // Nếu không tìm thấy bài viết, có thể xử lý lỗi
         if (!$post) {
