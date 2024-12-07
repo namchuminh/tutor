@@ -124,6 +124,8 @@ Route::get('/phu-huynh/nap-tien', [WebPhuHuynhController::class, 'pay'])->name('
 
 Route::post('/phu-huynh/nap-tien', [WebPhuHuynhController::class, 'payCheck'])->name('web.phuhuynh.payCheck');
 
+Route::post('/phu-huynh/cap-nhat', [WebPhuHuynhController::class, 'update'])->name('web.phuhuynh.update');
+
 Route::get('/checkVnpay', [WebPhuHuynhController::class, 'checkVnpay'])->name('web.phuhuynh.checkVnpay');
 
 Route::get('/dang-ky', action: [WebAuthController::class, 'tutorRegister'])->name('web.auth.tutorRegister')->middleware('notAuth');

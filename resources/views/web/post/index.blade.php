@@ -2,7 +2,7 @@
 @section('title', 'Tìm Gia Sư')
 @section('content')
 <!--archive header-->
-<div class="archive-header text-center">
+<div class="archive-header text-center" style="background-image: url({{ asset('assets/imgs/theme/shop-header-bg-2.jpg') }}); padding-top: 25px;">
     <div class="container">
         <h2><span class="color3">
             @if (isset($bySubject))

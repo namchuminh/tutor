@@ -7,15 +7,102 @@ use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\PhuHuynh;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class WebPhuHuynhController extends Controller
 {
-    public function show(){
+    public function show(Request $request){
         if(!auth()->user()){
             return redirect()->route('web.auth.login');
         }
-        dd(1);
+
+        // Lấy giá trị tìm kiếm từ request
+        $search = $request->input('search');
+
+        // Query dữ liệu với phân trang và tìm kiếm
+        $transactions = Transaction::with('user')
+            ->when(auth()->user()->role === 'phu_huynh', function ($query) {
+                $query->where('user_id', auth()->user()->id);
+            })
+            ->when($search, function ($query, $search) {
+                // Tìm kiếm theo tên người dùng hoặc email
+                $query->whereHas('user', function ($subQuery) use ($search) {
+                    $subQuery->where('name', 'like', "%$search%")
+                        ->orWhere('email', 'like', "%$search%");
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10); // Phân trang mỗi trang 10 dòng
+            
+        $user = User::findOrFail(auth()->user()->id);
+        $phuhuynh = PhuHuynh::where('user_id', auth()->user()->id)->first();
+        return view('web.phuhuynh.show', compact('transactions', 'user', 'phuhuynh'));
     }
+
+    public function update(Request $request)
+    {
+        if(!auth()->user()){
+            return redirect()->route('web.auth.login');
+        }
+
+        if(auth()->user()->role != "phu_huynh"){
+            return redirect()->route('web.auth.login');
+        }
+
+        // Lấy người dùng hiện tại
+        $user = auth()->user();
+
+        // Xác thực dữ liệu đầu vào
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|numeric|digits_between:10,11',
+            'address' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'old_password' => 'nullable|required_with:password,password2|string|min:4',
+            'password' => 'nullable|string|min:4',
+        ], [
+            'name.required' => 'Họ tên là bắt buộc.',
+            'phone.required' => 'Số điện thoại là bắt buộc.',
+            'address.required' => 'Địa chỉ là bắt buộc.',
+            'email.required' => 'Email là bắt buộc.',
+            'email.unique' => 'Email đã tồn tại.',
+            'old_password.required_with' => 'Bạn phải nhập mật khẩu cũ để đổi mật khẩu.',
+            'password.min' => "Mật khẩu có ít nhất 4 ký tự",
+        ]);
+
+        if($request->input('password') != $request->input('password2')){
+            return redirect()->back()->withErrors(['password' => 'Mật khẩu không trùng khớp.']);
+        }
+
+        // Cập nhật thông tin cá nhân
+        $user->update([
+            'name' => $request->input('name'),
+            'phone' => $request->input('phone'),
+            'email' => $request->input('email'),
+        ]);
+
+        $phuhuynh = PhuHuynh::where('user_id', auth()->user()->id)->first();
+
+        $phuhuynh->update([
+            'address' => $request->input('address'),
+            'phone_number' => $request->input('phone'),
+        ]);
+
+        // Đổi mật khẩu nếu có
+        if ($request->filled('password')) {
+            if (Hash::check($request->input('old_password'), $user->password)) {
+                $user->update([
+                    'password' => Hash::make($request->input('password')),
+                ]);
+            } else {
+                return redirect()->back()->withErrors(['old_password' => 'Mật khẩu cũ không đúng.']);
+            }
+        }
+
+        // Chuyển hướng với thông báo thành công
+        return redirect()->back()->with('success', 'Cập nhật thông tin thành công!');
+    } 
 
     public function pay(){
         if(!auth()->user()){
