@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2024 at 09:20 AM
+-- Generation Time: Dec 07, 2024 at 12:18 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -192,7 +192,7 @@ CREATE TABLE `phu_huynhs` (
 
 INSERT INTO `phu_huynhs` (`id`, `user_id`, `vip_package`, `balance`, `phone_number`, `address`, `status`, `created_at`, `updated_at`) VALUES
 (1, 7, '', 0, '0399889999', 'Hà Nội', 1, NULL, '2024-11-06 05:18:48'),
-(2, 8, '', 247000, '0999888999', 'Tầng 1, Tòa ABC, Đường XYZ, Quận JQK', 1, '2024-12-05 23:50:32', '2024-12-06 22:46:36');
+(2, 8, '', 87000, '0999888999', 'Tầng 1, Tòa ABC, Đường XYZ, Quận JQK', 1, '2024-12-05 23:50:32', '2024-12-07 03:54:31');
 
 -- --------------------------------------------------------
 
@@ -211,6 +211,7 @@ CREATE TABLE `posts` (
   `description` text NOT NULL,
   `fee` int(11) NOT NULL DEFAULT 0,
   `status` enum('pending','reject','accept','') NOT NULL DEFAULT 'pending',
+  `views` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -219,11 +220,11 @@ CREATE TABLE `posts` (
 -- Dumping data for table `posts`
 --
 
-INSERT INTO `posts` (`id`, `image`, `gia_su_id`, `user_id`, `subject_id`, `title`, `slug`, `description`, `fee`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'posts/ZhtlCTlP7unkeMgKRdpUzPK5TAxGpn5C0Qq1UEPe.jpg', 2, 2, 1, 'ABCDE nam', 'abcde-nam', '<p>ABAAAA được</p>', 0, 'accept', '2024-10-27 11:31:28', '2024-12-03 04:48:01'),
-(2, 'posts/JOABXH95o8WYwdOxE8bEO23oiq7ebsWExolqhMXS.jpg', 5, 3, 2, 'Bài viết mới', 'bai-viet-moi', '<p>abcde</p>', 15000, 'accept', '2024-10-27 12:17:33', '2024-12-03 01:18:34'),
-(3, 'posts/pnJyz1LRT5vABgfFm7z54FkCs3GUakY6razEWbrQ.jpg', 1, 2, 2, 'bài viết gia sư lớp 111', 'bai-viet-gia-su-lop-111', '<p>Nguyễn văn a</p>', 15000, 'accept', '2024-12-03 01:26:14', '2024-12-03 01:43:32'),
-(4, 'posts/HUZD04IeL2jZi8TFi1s7ABqdoQXQ7lIL3CLZY03m.jpg', 2, 3, 1, 'Gia sư môn toán tại nhà', 'gia-su-mon-toan-tai-nha', '<p>aaaa</p>', 150000, 'accept', '2024-12-05 05:30:42', '2024-12-06 14:04:05');
+INSERT INTO `posts` (`id`, `image`, `gia_su_id`, `user_id`, `subject_id`, `title`, `slug`, `description`, `fee`, `status`, `views`, `created_at`, `updated_at`) VALUES
+(1, 'posts/ZhtlCTlP7unkeMgKRdpUzPK5TAxGpn5C0Qq1UEPe.jpg', 2, 2, 1, 'ABCDE nam', 'abcde-nam', '<p>ABAAAA được</p>', 0, 'accept', 0, '2024-10-27 11:31:28', '2024-12-03 04:48:01'),
+(2, 'posts/JOABXH95o8WYwdOxE8bEO23oiq7ebsWExolqhMXS.jpg', 5, 3, 2, 'Bài viết mới', 'bai-viet-moi', '<p>abcde</p>', 15000, 'accept', 0, '2024-10-27 12:17:33', '2024-12-03 01:18:34'),
+(3, 'posts/pnJyz1LRT5vABgfFm7z54FkCs3GUakY6razEWbrQ.jpg', 1, 2, 2, 'bài viết gia sư lớp 111', 'bai-viet-gia-su-lop-111', '<p>Nguyễn văn a</p>', 15000, 'accept', 0, '2024-12-03 01:26:14', '2024-12-03 01:43:32'),
+(4, 'posts/HUZD04IeL2jZi8TFi1s7ABqdoQXQ7lIL3CLZY03m.jpg', 2, 3, 1, 'Gia sư môn toán tại nhà', 'gia-su-mon-toan-tai-nha', '<p>aaaa</p>', 150000, 'accept', 6, '2024-12-05 05:30:42', '2024-12-07 04:18:38');
 
 -- --------------------------------------------------------
 
@@ -319,7 +320,9 @@ INSERT INTO `transactions` (`id`, `user_id`, `amount`, `description`, `created_a
 (26, 8, 10000, 'Phụ huynh  nạp 10,000 vào tài khoản!', '2024-12-06 14:10:18', '2024-12-06 14:10:18'),
 (27, 8, 42000, 'Phụ huynh  nạp 42,000 vào tài khoản!', '2024-12-06 14:11:41', '2024-12-06 14:11:41'),
 (28, 8, 20000, 'Phụ huynh  nạp 20,000 vào tài khoản!', '2024-12-06 14:12:58', '2024-12-06 14:12:58'),
-(29, 8, 10000, 'Phụ huynh  nạp 10,000 vào tài khoản!', '2024-12-06 22:46:36', '2024-12-06 22:46:36');
+(29, 8, 10000, 'Phụ huynh  nạp 10,000 vào tài khoản!', '2024-12-06 22:46:36', '2024-12-06 22:46:36'),
+(30, 8, -150000, 'Hệ thống trừ 150.000 phụ huynh mua gói VIP: VIP1', '2024-12-07 03:46:48', '2024-12-07 03:46:48'),
+(31, 8, -10000, 'Hệ thống trừ 10.000 phụ huynh mua gói VIP: VIP2', '2024-12-07 03:54:31', '2024-12-07 03:54:31');
 
 -- --------------------------------------------------------
 
@@ -381,7 +384,8 @@ CREATE TABLE `vip_packages` (
 INSERT INTO `vip_packages` (`id`, `phu_huynh_id`, `gia_su_id`, `package_type`, `start_date`, `end_date`, `vip_package_id`, `created_at`, `updated_at`) VALUES
 (14, NULL, 4, 'VIP1', '2024-12-04', '2024-12-11', 1, '2024-12-04 01:33:48', '2024-12-04 01:33:48'),
 (15, NULL, 1, 'VIP2', '2024-12-04', '2024-12-09', 3, '2024-12-04 01:34:07', '2024-12-04 01:34:07'),
-(16, NULL, 2, 'VIP2', '2024-12-05', '2024-12-10', 3, '2024-12-05 05:30:06', '2024-12-05 05:30:06');
+(16, NULL, 2, 'VIP2', '2024-12-05', '2024-12-10', 3, '2024-12-05 05:30:06', '2024-12-05 05:30:06'),
+(18, 2, NULL, 'VIP2', '2024-12-07', '2024-12-12', 3, '2024-12-07 03:54:31', '2024-12-07 03:54:31');
 
 -- --------------------------------------------------------
 
@@ -586,7 +590,7 @@ ALTER TABLE `subjects`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -598,7 +602,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `vip_packages`
 --
 ALTER TABLE `vip_packages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `vip_package_details`
