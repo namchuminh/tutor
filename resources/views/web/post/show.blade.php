@@ -22,9 +22,8 @@
                     <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                     <div class="single-social-share clearfix ">
                         <div class="entry-meta meta-1 font-small color-grey float-left mt-10">
-                            <span class="hit-count"><i class="ti-comment mr-5"></i>82 comments</span>
-                            <span class="hit-count"><i class="ti-heart mr-5"></i>68 likes</span>
-                            <span class="hit-count"><i class="ti-star mr-5"></i>8/10</span>
+                            <span class="hit-count"><i class="ti-comment mr-5"></i>{{ $comments->count() }} bình luận</span>
+                            <span class="hit-count"><i class="ti-bolt"></i>{{ $post->views }} lượt xem</span>
                         </div>
                         <ul class="d-inline-block list-inline float-right">
                             <li class="list-inline-item"><a class="social-icon facebook-icon text-xs-center color-white" target="_blank" href="#"><i class="ti-facebook"></i></a></li>
@@ -39,9 +38,8 @@
                 </div>
                 <div class="single-social-share clearfix ">
                     <div class="entry-meta meta-1 font-small color-grey float-left mt-10">
-                        <span class="hit-count"><i class="ti-comment"></i>82 comments</span>
-                        <span class="hit-count"><i class="ti-heart"></i>68 likes</span>
-                        <span class="hit-count"><i class="ti-star"></i>8/10</span>
+                        <span class="hit-count"><i class="ti-comment"></i>{{ $comments->count() }} bình luận</span>
+                        <span class="hit-count"><i class="ti-bolt"></i>{{ $post->views }} lượt xem</span>
                     </div>
                     <ul class="d-inline-block list-inline float-right">
                         <li class="list-inline-item"><a class="social-icon facebook-icon text-xs-center color-white" target="_blank" href="#"><i class="ti-facebook"></i></a></li>

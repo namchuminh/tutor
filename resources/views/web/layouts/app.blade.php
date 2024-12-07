@@ -239,6 +239,9 @@
                                                 @endforeach
                                             </ul>
                                         </li>
+                                        <li>
+                                            <a href="{{ route('web.vip.show') }}">Mua Gói VIP</a>
+                                        </li>
                                     </ul>
                                 </nav>
                             </div>

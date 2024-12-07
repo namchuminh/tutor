@@ -95,6 +95,7 @@ use App\Http\Controllers\Web\WebTutorController;
 use App\Http\Controllers\Web\WebAuthController;
 use App\Http\Controllers\Web\WebPhuHuynhController;
 use App\Http\Controllers\Web\WebCommentController;
+use App\Http\Controllers\Web\WebVipPackageDetailController;
 
 Route::get('/', [WebHomeController::class, 'index'])->name('web.home.index');
 
@@ -132,8 +133,13 @@ Route::get('/dang-ky', action: [WebAuthController::class, 'tutorRegister'])->nam
 
 Route::post('/dang-ky', action: [WebAuthController::class, 'tutorRegisterSubmit'])->name('web.auth.tutorRegister.submit')->middleware('notAuth');
 
-
 Route::post('/binh-luan', action: [WebCommentController::class, 'post'])->name('web.comment.post');
+
+Route::get('/goi-vip', action: [WebVipPackageDetailController::class, 'show'])->name('web.vip.show');
+
+Route::get('/goi-vip/{id}', action: [WebVipPackageDetailController::class, 'register'])->name('web.vip.register');
+
+
 
 
 

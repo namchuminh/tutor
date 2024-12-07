@@ -3,7 +3,7 @@
 @section('content')
 <div class="main_content shop pb-100 mt-100">
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" style="height: 500px;">
             <div class="col-xl-6 col-md-10">
                 <div class="login_wrap widget-taber-content p-30 background-white border-radius-5">
                     <div class="padding_eight_all bg-white">
