@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2024 at 12:52 PM
+-- Generation Time: Dec 07, 2024 at 09:20 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -35,13 +35,6 @@ CREATE TABLE `comments` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `comments`
---
-
-INSERT INTO `comments` (`id`, `post_id`, `user_id`, `content`, `created_at`, `updated_at`) VALUES
-(2, 3, 3, 'abcde', '2024-12-03 08:56:39', '2024-12-03 08:56:39');
 
 -- --------------------------------------------------------
 
@@ -77,6 +70,8 @@ CREATE TABLE `gia_sus` (
   `post_status` tinyint(1) NOT NULL DEFAULT 0,
   `balance` int(11) NOT NULL DEFAULT 0,
   `vip_package` varchar(255) DEFAULT NULL,
+  `avatar` text NOT NULL,
+  `bio` text NOT NULL DEFAULT 'Chưa có thông tin giới thiệu.',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -85,12 +80,14 @@ CREATE TABLE `gia_sus` (
 -- Dumping data for table `gia_sus`
 --
 
-INSERT INTO `gia_sus` (`id`, `user_id`, `rating`, `review_count`, `fee`, `area`, `years_of_experience`, `education_level`, `post_status`, `balance`, `vip_package`, `created_at`, `updated_at`) VALUES
-(1, 2, 0, 0, 150000, 'Xã Phan Rí Thành, Huyện Bắc Bình, Tỉnh Bình Thuận', 1, 'Giáo Viên', 0, 5007000, NULL, '2024-10-27 02:08:12', '2024-12-03 04:39:36'),
-(2, 3, 0, 0, 200000, 'Huyện Cư Jút, Tỉnh Đắk Nông', 1, 'Giáo Viên', 0, 500000, NULL, '2024-10-27 02:23:23', '2024-12-03 04:52:30'),
-(4, 5, 0, 0, 600000, 'Phường Minh Đức, Quận Đồ Sơn, Thành phố Hải Phòng', 1, 'Giáo Viên', 0, 0, NULL, '2024-10-27 02:30:26', '2024-10-27 03:31:41'),
-(5, 6, 0, 0, 600000, 'Thị trấn Võ Xu, Huyện Đức Linh, Tỉnh Bình Thuận', 1, 'Giáo Viên', 0, 0, NULL, '2024-10-27 02:31:10', '2024-10-27 02:31:10'),
-(6, 7, 0, 0, 50000, 'Thị Xã Buôn Hồ, Tỉnh Đắk Lắk', 1, 'Giáo Viên', 0, 0, NULL, '2024-10-27 03:28:21', '2024-10-27 03:28:21');
+INSERT INTO `gia_sus` (`id`, `user_id`, `rating`, `review_count`, `fee`, `area`, `years_of_experience`, `education_level`, `post_status`, `balance`, `vip_package`, `avatar`, `bio`, `created_at`, `updated_at`) VALUES
+(1, 2, 0, 0, 150000, 'Xã Đại Mạch, Huyện Đông Anh, Thành phố Hà Nội', 1, 'Giáo Viên', 0, 4847000, NULL, 'avatars/fAUSizIx3IPMvQu8TU9SZ1ioANNUNh1oCbki0rWo.jpg', 'Chưa có thông tin giới thiệu.', '2024-10-27 02:08:12', '2024-12-05 01:46:01'),
+(2, 3, 0, 0, 200000, 'Phường Tân Hưng, Quận 7, Thành phố Hồ Chí Minh', 1, 'Giáo Viên', 0, 490000, NULL, 'avatars/fAUSizIx3IPMvQu8TU9SZ1ioANNUNh1oCbki0rWo.jpg', 'Chưa có thông tin giới thiệu.', '2024-10-27 02:23:23', '2024-12-05 05:30:06'),
+(4, 5, 0, 0, 600000, 'Phường Minh Đức, Quận Đồ Sơn, Thành phố Hải Phòng', 1, 'Giáo Viên', 0, 50000, NULL, '', 'Chưa có thông tin giới thiệu.', '2024-10-27 02:30:26', '2024-12-04 01:33:48'),
+(5, 6, 0, 0, 600000, 'Thị trấn Võ Xu, Huyện Đức Linh, Tỉnh Bình Thuận', 1, 'Giáo Viên', 0, 0, NULL, '', 'Chưa có thông tin giới thiệu.', '2024-10-27 02:31:10', '2024-10-27 02:31:10'),
+(6, 7, 0, 0, 50000, 'Thị Xã Buôn Hồ, Tỉnh Đắk Lắk', 1, 'Giáo Viên', 0, 0, NULL, '', 'Chưa có thông tin giới thiệu.', '2024-10-27 03:28:21', '2024-10-27 03:28:21'),
+(7, 10, 0, 0, 15000, 'Thị Xã Buôn Hồ, Tỉnh Đắk Lắk', 4, 'Thạc Sĩ', 0, 0, NULL, 'avatars/fAUSizIx3IPMvQu8TU9SZ1ioANNUNh1oCbki0rWo.jpg', 'gsdgdsg', '2024-12-06 05:56:41', '2024-12-06 05:56:41'),
+(8, 11, 0, 0, 150000, 'Xã Ngọc Xá, Huyện Quế Võ, Tỉnh Bắc Ninh', 3, 'Thạc Sĩ', 0, 0, NULL, 'avatars/POGI0t54RJ9xL4HP4kXgt1UVWBqzCpWkVg8ZGL1F.jpg', 'abcde', '2024-12-06 06:06:21', '2024-12-06 06:06:21');
 
 -- --------------------------------------------------------
 
@@ -194,7 +191,8 @@ CREATE TABLE `phu_huynhs` (
 --
 
 INSERT INTO `phu_huynhs` (`id`, `user_id`, `vip_package`, `balance`, `phone_number`, `address`, `status`, `created_at`, `updated_at`) VALUES
-(1, 7, '', 0, '0399889999', 'Hà Nội', 1, NULL, '2024-11-06 05:18:48');
+(1, 7, '', 0, '0399889999', 'Hà Nội', 1, NULL, '2024-11-06 05:18:48'),
+(2, 8, '', 247000, '0999888999', 'Tầng 1, Tòa ABC, Đường XYZ, Quận JQK', 1, '2024-12-05 23:50:32', '2024-12-06 22:46:36');
 
 -- --------------------------------------------------------
 
@@ -222,9 +220,10 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`id`, `image`, `gia_su_id`, `user_id`, `subject_id`, `title`, `slug`, `description`, `fee`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'posts/ZhtlCTlP7unkeMgKRdpUzPK5TAxGpn5C0Qq1UEPe.jpg', 2, 2, 1, 'ABCDE nam', 'abcde-nam', '<p>ABAAAA được</p>', 0, 'reject', '2024-10-27 11:31:28', '2024-12-03 04:48:01'),
-(2, 'posts/JOABXH95o8WYwdOxE8bEO23oiq7ebsWExolqhMXS.jpg', 5, 3, 2, 'Bài viết mới', 'bai-viet-moi', '<p>abcde</p>', 15000, 'reject', '2024-10-27 12:17:33', '2024-12-03 01:18:34'),
-(3, 'posts/pnJyz1LRT5vABgfFm7z54FkCs3GUakY6razEWbrQ.jpg', 1, 2, 2, 'bài viết gia sư lớp 111', 'bai-viet-gia-su-lop-111', '<p>Nguyễn văn a</p>', 15000, 'accept', '2024-12-03 01:26:14', '2024-12-03 01:43:32');
+(1, 'posts/ZhtlCTlP7unkeMgKRdpUzPK5TAxGpn5C0Qq1UEPe.jpg', 2, 2, 1, 'ABCDE nam', 'abcde-nam', '<p>ABAAAA được</p>', 0, 'accept', '2024-10-27 11:31:28', '2024-12-03 04:48:01'),
+(2, 'posts/JOABXH95o8WYwdOxE8bEO23oiq7ebsWExolqhMXS.jpg', 5, 3, 2, 'Bài viết mới', 'bai-viet-moi', '<p>abcde</p>', 15000, 'accept', '2024-10-27 12:17:33', '2024-12-03 01:18:34'),
+(3, 'posts/pnJyz1LRT5vABgfFm7z54FkCs3GUakY6razEWbrQ.jpg', 1, 2, 2, 'bài viết gia sư lớp 111', 'bai-viet-gia-su-lop-111', '<p>Nguyễn văn a</p>', 15000, 'accept', '2024-12-03 01:26:14', '2024-12-03 01:43:32'),
+(4, 'posts/HUZD04IeL2jZi8TFi1s7ABqdoQXQ7lIL3CLZY03m.jpg', 2, 3, 1, 'Gia sư môn toán tại nhà', 'gia-su-mon-toan-tai-nha', '<p>aaaa</p>', 150000, 'accept', '2024-12-05 05:30:42', '2024-12-06 14:04:05');
 
 -- --------------------------------------------------------
 
@@ -309,7 +308,18 @@ INSERT INTO `transactions` (`id`, `user_id`, `amount`, `description`, `created_a
 (15, 2, -150000, 'Hệ thống trừ 150.000 gia sư mua gói VIP: VIP1', '2024-12-03 04:38:09', '2024-12-03 04:38:09'),
 (16, 2, -10000, 'Hệ thống trừ 10.000 gia sư mua gói VIP: VIP2', '2024-12-03 04:38:52', '2024-12-03 04:38:52'),
 (17, 2, -150000, 'Hệ thống trừ 150.000 gia sư mua gói VIP: VIP1', '2024-12-03 04:39:36', '2024-12-03 04:39:36'),
-(18, 3, 500000, 'Gia sư  nạp 500,000 vào tài khoản!', '2024-12-03 04:52:30', '2024-12-03 04:52:30');
+(18, 3, 500000, 'Gia sư  nạp 500,000 vào tài khoản!', '2024-12-03 04:52:30', '2024-12-03 04:52:30'),
+(19, 2, -150000, 'Hệ thống trừ 150.000 gia sư mua gói VIP: VIP1', '2024-12-04 01:14:44', '2024-12-04 01:14:44'),
+(20, 5, 200000, 'Gia sư  nạp 200,000 vào tài khoản!', '2024-12-04 01:33:34', '2024-12-04 01:33:34'),
+(21, 5, -150000, 'Hệ thống trừ 150.000 gia sư mua gói VIP: VIP1', '2024-12-04 01:33:48', '2024-12-04 01:33:48'),
+(22, 2, -10000, 'Hệ thống trừ 10.000 gia sư mua gói VIP: VIP2', '2024-12-04 01:34:07', '2024-12-04 01:34:07'),
+(23, 3, -10000, 'Hệ thống trừ 10.000 gia sư mua gói VIP: VIP2', '2024-12-05 05:30:06', '2024-12-05 05:30:06'),
+(24, 8, 15000, 'Phụ huynh  nạp 15,000 vào tài khoản!', '2024-12-06 13:59:27', '2024-12-06 13:59:27'),
+(25, 8, 150000, 'Phụ huynh  nạp 150,000 vào tài khoản!', '2024-12-06 14:07:27', '2024-12-06 14:07:27'),
+(26, 8, 10000, 'Phụ huynh  nạp 10,000 vào tài khoản!', '2024-12-06 14:10:18', '2024-12-06 14:10:18'),
+(27, 8, 42000, 'Phụ huynh  nạp 42,000 vào tài khoản!', '2024-12-06 14:11:41', '2024-12-06 14:11:41'),
+(28, 8, 20000, 'Phụ huynh  nạp 20,000 vào tài khoản!', '2024-12-06 14:12:58', '2024-12-06 14:12:58'),
+(29, 8, 10000, 'Phụ huynh  nạp 10,000 vào tài khoản!', '2024-12-06 22:46:36', '2024-12-06 22:46:36');
 
 -- --------------------------------------------------------
 
@@ -321,6 +331,7 @@ CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `phone` varchar(11) DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `role` enum('phu_huynh','gia_su','admin') NOT NULL,
@@ -333,13 +344,17 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Quản Trị Viên', 'admin@gmail.com', '2024-10-25 10:49:43', '$2y$10$Vbd/YU.o5o9gII8BViJYMuN3yh25RnPMazLX0ruE8wMG1KyFkUTf6', 'admin', NULL, '2024-10-25 10:49:33', '2024-11-09 12:27:10'),
-(2, 'Nguyễn Văn An', 'nguyenvana@gmail.com', NULL, '$2y$10$sSpmLv83F1VsGOggEnNJDuZDqI3IC0O/8hA5N/O0al9P4OoMI55qa', 'gia_su', NULL, '2024-10-27 02:08:12', '2024-12-03 01:59:02'),
-(3, 'Nguyễn Văn Bình', 'nguyenvanb@gmail.com', NULL, '$2y$10$NNXneomHkanfl5bjduOGVey1vooSS42GQUugHnx75RcOVLJaN5bBW', 'gia_su', NULL, '2024-10-27 02:23:23', '2024-10-27 03:31:30'),
-(5, 'Nguyễn Văn Dũng', 'nguyenvand@gmail.com', NULL, '$2y$10$f2KjdoS/6S5m9BRi01ZwCeOzccC3u0tiSu1Liw8JhDj1XNwp/3dGO', 'gia_su', NULL, '2024-10-27 02:30:26', '2024-10-27 02:30:26'),
-(6, 'Nguyễn Văn Em', 'nguyenvane@gmail.com', NULL, '$2y$10$L3YLBTc.sUxVukbe1bOj5Oi7Jv2KvKqcBPNro96a5CH1rS4SpEWP6', 'gia_su', NULL, '2024-10-27 02:31:10', '2024-10-27 02:31:10'),
-(7, 'Nguyễn Văn Giang', 'nguyenvang@gmail.com', NULL, '$2y$10$8iK1v5GWDFuFACK3ycWTJuITvr7HdxYAYZJaAVmvMImhi12v5uguq', 'phu_huynh', NULL, '2024-10-27 03:28:21', '2024-10-27 03:28:21');
+INSERT INTO `users` (`id`, `name`, `email`, `phone`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Quản Trị Viên', 'admin@gmail.com', '0888999888', '2024-10-25 10:49:43', '$2y$10$Vbd/YU.o5o9gII8BViJYMuN3yh25RnPMazLX0ruE8wMG1KyFkUTf6', 'admin', NULL, '2024-10-25 10:49:33', '2024-11-09 12:27:10'),
+(2, 'Nguyễn Văn An', 'nguyenvana@gmail.com', '0888777333', NULL, '$2y$10$sSpmLv83F1VsGOggEnNJDuZDqI3IC0O/8hA5N/O0al9P4OoMI55qa', 'gia_su', NULL, '2024-10-27 02:08:12', '2024-12-03 01:59:02'),
+(3, 'Nguyễn Văn Bình', 'nguyenvanb@gmail.com', '0333555666', NULL, '$2y$10$NNXneomHkanfl5bjduOGVey1vooSS42GQUugHnx75RcOVLJaN5bBW', 'gia_su', NULL, '2024-10-27 02:23:23', '2024-10-27 03:31:30'),
+(5, 'Nguyễn Văn Dũng', 'nguyenvand@gmail.com', '0777888222', NULL, '$2y$10$f2KjdoS/6S5m9BRi01ZwCeOzccC3u0tiSu1Liw8JhDj1XNwp/3dGO', 'gia_su', NULL, '2024-10-27 02:30:26', '2024-10-27 02:30:26'),
+(6, 'Nguyễn Văn Em', 'nguyenvane@gmail.com', '0666999888', NULL, '$2y$10$L3YLBTc.sUxVukbe1bOj5Oi7Jv2KvKqcBPNro96a5CH1rS4SpEWP6', 'gia_su', NULL, '2024-10-27 02:31:10', '2024-10-27 02:31:10'),
+(7, 'Nguyễn Văn Giang', 'nguyenvang@gmail.com', '0555999888', NULL, '$2y$10$8iK1v5GWDFuFACK3ycWTJuITvr7HdxYAYZJaAVmvMImhi12v5uguq', 'phu_huynh', NULL, '2024-10-27 03:28:21', '2024-10-27 03:28:21'),
+(8, 'Nguyễn Văn Zang', 'nguyenvanz@gmail.com', '0999888999', NULL, '$2y$10$HgCyagng7SNPCjbOpkURp.rtOD1O4V.mOGpA7rWzCuA/la8TOtIq.', 'phu_huynh', NULL, '2024-12-05 23:50:32', '2024-12-07 01:07:51'),
+(9, 'Nguyễn Văn Ngọc', 'nguyenvann@gmail.com', '0555444666', NULL, '$2y$10$cKxwdXet9kaWLL4NDqF6ROw..YdwK4S/MuGwvL8qHZ4xBuT5EW5em', 'gia_su', NULL, '2024-12-06 05:55:25', '2024-12-06 05:55:25'),
+(10, 'Nguyễn Văn Ngọc', 'nguyenvann2@gmail.com', '0555444666', NULL, '$2y$10$mE/Mtmx05WjpzUswaHMgPeK.HkZFNYQxmBShf66lUeaPOw1MNeVDO', 'gia_su', NULL, '2024-12-06 05:56:41', '2024-12-06 05:56:41'),
+(11, 'Nguyễn Văn Hưng', 'nguyenvanh@gmail.com', '0555666777', NULL, '$2y$10$.kgjOZvEy35j5AQLKkgH.eXIQIPrvZcIODSOiUJr3/7pd.tLZARR.', 'gia_su', NULL, '2024-12-06 06:06:21', '2024-12-06 06:06:21');
 
 -- --------------------------------------------------------
 
@@ -358,6 +373,15 @@ CREATE TABLE `vip_packages` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `vip_packages`
+--
+
+INSERT INTO `vip_packages` (`id`, `phu_huynh_id`, `gia_su_id`, `package_type`, `start_date`, `end_date`, `vip_package_id`, `created_at`, `updated_at`) VALUES
+(14, NULL, 4, 'VIP1', '2024-12-04', '2024-12-11', 1, '2024-12-04 01:33:48', '2024-12-04 01:33:48'),
+(15, NULL, 1, 'VIP2', '2024-12-04', '2024-12-09', 3, '2024-12-04 01:34:07', '2024-12-04 01:34:07'),
+(16, NULL, 2, 'VIP2', '2024-12-05', '2024-12-10', 3, '2024-12-05 05:30:06', '2024-12-05 05:30:06');
 
 -- --------------------------------------------------------
 
@@ -502,7 +526,7 @@ ALTER TABLE `vip_package_details`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -514,7 +538,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `gia_sus`
 --
 ALTER TABLE `gia_sus`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -538,13 +562,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `phu_huynhs`
 --
 ALTER TABLE `phu_huynhs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -562,19 +586,19 @@ ALTER TABLE `subjects`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `vip_packages`
 --
 ALTER TABLE `vip_packages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `vip_package_details`
