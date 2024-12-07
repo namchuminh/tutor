@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\GiaSu;
 use App\Models\PhuHuynh;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class WebAuthController extends Controller
 {
-    public function login(){
+    public function login(Request $request){
+        if(!empty($request->input('post_id')) && $request->input('post_id') != "" && is_numeric($request->input('post_id'))){
+            Session::put('post_id', $request->input('post_id'));
+        }
         return view('web.auth.login');
     }
 
@@ -35,9 +40,15 @@ class WebAuthController extends Controller
                     Auth::logout();
                     return redirect()->route('web.auth.login')->withErrors(['error' => 'Không thể đăng nhập! Lý do: Phụ huynh bị chặn khỏi hệ thống!']);
                 }else{
-                    return redirect()->intended('/phu-huynh');
+                    if (Session::has('post_id')) {
+                        $post_id = Session::get('post_id');
+                        $post = Post::findOrFail($post_id);
+                        Session::forget('post_id');
+                        return redirect()->route('web.post.show', $post->slug);
+                    }else{
+                        return redirect()->intended('/phu-huynh');
+                    }
                 }
-                // return redirect()->intended('/phu-huynh');
             } else if(auth()->user()->role == 'gia_su') {
                 return redirect()->route('web.giasu.show', auth()->user()->id);
             }else{

@@ -116,7 +116,7 @@
                 <div class="comments-area">
                     <h3 class="mb-30 tt-comment">{{ $comments->count() }} Bình Luận</h3>
                     @foreach ($comments as $comment)
-                        <div class="comment-list" id="comments-list">
+                        <div class="comment-list" id="comments-list" >
                             <div class="single-comment justify-content-between d-flex">
                                 <div class="user justify-content-between d-flex">
                                     @php
@@ -153,7 +153,7 @@
                 </div>
                 <!--comment form-->
                 @if (auth()->user())
-                    <div class="comment-form">
+                    <div class="comment-form" id="comment-form">
                         <h3 class="mb-30">Bình Luận</h3>
                         <form class="form-contact comment_form" action="#" id="commentForm">
                             <div class="row">
@@ -179,7 +179,7 @@
                         <form class="form-contact comment_form">
                             <p class="mb-30">Đăng nhập để bình luận về bài viết của gia sư này!</p>
                             <div class="form-group">
-                                <a href="{{ route('web.auth.login') }}" class="button button-contactForm">Đăng Nhập</a>
+                                <a href="{{ route('web.auth.login') }}?post_id={{ $post_id }}" class="button button-contactForm">Đăng Nhập</a>
                             </div>
                         </form>
                     </div>
@@ -426,6 +426,7 @@
         $(".show-phone").click(function(e) {
             e.preventDefault();
             var user_id = '{{ $user_id }}';
+            var post_id = '{{ $post_id }}';
 
             $.ajax({
                 url: "{{ route('web.giasu.phone') }}",  // Đảm bảo route này đúng
@@ -433,6 +434,7 @@
                 data: {
                     user_id,
                     _token: "{{ csrf_token() }}",
+                    post_id
                 },
                 success: function (response) {
                     if(!isNaN(response)){

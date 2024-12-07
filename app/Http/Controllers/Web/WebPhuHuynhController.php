@@ -18,10 +18,25 @@ class WebPhuHuynhController extends Controller
     }
 
     public function pay(){
+        if(!auth()->user()){
+            return redirect()->route('web.auth.login');
+        }
+
+        if(auth()->user()->role == "gia_su"){
+            return redirect()->route('admin.deposit.index');
+        }
         return view('web.phuhuynh.pay');
     }
 
     public function payCheck(Request $request){
+        if(!auth()->user()){
+            return redirect()->route('web.auth.login');
+        }
+
+        if(auth()->user()->role == "gia_su"){
+            return redirect()->route('admin.deposit.index');
+        }
+
         $request->validate([
             'amount' => 'required|numeric|min:5000',
         ], [

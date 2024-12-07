@@ -69,7 +69,7 @@
                 text: '{{ session('success') }}',
                 duration: 5000, // thời gian hiển thị (ms)
                 close: true, // nút đóng
-                gravity: "top", // vị trí: "top" hoặc "bottom"
+                gravity: "bottom", // vị trí: "top" hoặc "bottom"
                 position: "center", // "left", "center", "right"
             }).showToast();
         });

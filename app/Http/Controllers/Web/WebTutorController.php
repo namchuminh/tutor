@@ -10,6 +10,8 @@ use App\Models\PhuHuynh;
 use App\Models\User;
 use App\Models\VipPackage;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
+
 
 
 class WebTutorController extends Controller
@@ -37,6 +39,7 @@ class WebTutorController extends Controller
         ]);
 
         if(!auth()->user()){
+            Session::put('post_id', $request->post_id);
             echo "Vui lòng đăng nhập để xem thông tin liên hệ!";
             return;
         }
