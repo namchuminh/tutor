@@ -262,15 +262,15 @@
                     <div class="pt-50 pb-50 main-search-form-cover">
                         <div class="row mb-20">
                             <div class="col-12">
-                                <form action="#" method="get" class="search-form position-relative">
+                                <form action="{{ route('web.giasu.index') }}" method="get" class="search-form position-relative">
                                     <div class="search-form-icon"><i class="ti-search"></i></div>
                                     <label>
-                                        <input type="text" class="search_field" placeholder="Enter keywords for search..." value="" name="s">
+                                        <input type="text" class="search_field" placeholder="Tìm kiếm" value="{{ request('s') }}" name="s">
                                     </label>
                                     <div class="search-switch">
                                         <ul class="list-inline">
-                                            <li class="list-inline-item"><a href="#" class="active">Articles</a></li>
-                                            <li class="list-inline-item"><a href="#">Authors</a></li>
+                                            <li class="list-inline-item"><a href="#" class="active">Môn Học</a></li>
+                                            <li class="list-inline-item"><a href="#">Tác Giả</a></li>
                                         </ul>
                                     </div>
                                 </form>
@@ -278,16 +278,16 @@
                         </div>
                         <div class="row">
                             <div class="col-12 font-small suggested-area">
-                                <p class="d-inline font-small suggested"><strong>Suggested:</strong></p>
+                                <p class="d-inline font-small suggested"><strong>Đề Xuất:</strong></p>
                                 <ul class="list-inline d-inline-block">
-                                    <li class="list-inline-item"><a href="#">Covid-19</a></li>
-                                    <li class="list-inline-item"><a href="#">Health</a></li>
-                                    <li class="list-inline-item"><a href="#">WFH</a></li>
-                                    <li class="list-inline-item"><a href="#">UltraNet</a></li>
-                                    <li class="list-inline-item"><a href="#">Hospital</a></li>
-                                    <li class="list-inline-item"><a href="#">Policies</a></li>
-                                    <li class="list-inline-item"><a href="#">Energy</a></li>
-                                    <li class="list-inline-item"><a href="#">Business</a></li>
+                                    <li class="list-inline-item"><a href="#">Môn Toán</a></li>
+                                    <li class="list-inline-item"><a href="#">Tiếng Việt</a></li>
+                                    <li class="list-inline-item"><a href="#">Tiếng Anh Lớp 3</a></li>
+                                    <li class="list-inline-item"><a href="#">Đại Số</a></li>
+                                    <li class="list-inline-item"><a href="#">Hình Học Lớp 5</a></li>
+                                    <li class="list-inline-item"><a href="#">Ôn Thi</a></li>
+                                    <li class="list-inline-item"><a href="#">Ngữ Văn</a></li>
+                                    <li class="list-inline-item"><a href="#">Luyện Thi</a></li>
                                 </ul>
                             </div>
                         </div>

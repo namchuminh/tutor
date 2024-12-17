@@ -11,28 +11,42 @@ use Illuminate\Support\Facades\Session;
 
 class WebPostController extends Controller
 {
-    public function index(){
+    public function index()
+    {
+        // Lấy tham số tìm kiếm từ URL (nếu có)
+        $search = request('s'); // Tương đương $_GET['s']
+
         // Lấy danh sách các môn học và đếm bài viết có status 'accept'
         $subjects = Subject::withCount(['posts' => function ($query) {
             $query->where('status', 'accept');
         }])->get();
 
-        // Lấy danh sách bài viết, bao gồm điều kiện lọc area nếu có
+        // Lấy danh sách bài viết, bao gồm tìm kiếm theo tên môn học hoặc gia sư
         $posts = Post::with(['giaSu.user', 'subject'])
             ->where('status', 'accept') // Lọc bài viết có trạng thái 'accept'
             ->when(request('area'), function ($query, $area) {
+                // Lọc theo khu vực
                 $query->whereHas('giaSu', function ($subQuery) use ($area) {
                     $subQuery->where('area', 'like', '%' . $area . '%');
                 });
             })
+            ->when($search, function ($query, $search) {
+                // Tìm kiếm theo tên môn học hoặc tên gia sư
+                $query->whereHas('subject', function ($subQuery) use ($search) {
+                    $subQuery->where('name', 'like', '%' . $search . '%');
+                })->orWhereHas('giaSu.user', function ($subQuery) use ($search) {
+                    $subQuery->where('name', 'like', '%' . $search . '%');
+                });
+            })
             ->orderBy('created_at', 'desc') // Sắp xếp theo thời gian tạo
             ->paginate(8); // Mỗi trang hiển thị 8 bài
-        
+
+        // Lấy bài viết ngẫu nhiên (không bị ảnh hưởng bởi tìm kiếm)
         $postsRandom = Post::with(['giaSu.user', 'subject'])
             ->where('status', 'accept')
             ->inRandomOrder() // Lấy ngẫu nhiên
             ->limit(2) // Giới hạn 2 bài
-            ->get(); // Lấy danh sách bài viết
+            ->get();
 
         return view('web.post.index', compact('posts', 'subjects', 'postsRandom'));
     }
