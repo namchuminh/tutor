@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="container">
-        <div class="row" style="height: 500px;">
+        <div class="row" style="min-height: 500px;">
             <div class="col-lg-3 col-md-4">
                 <div class="dashboard-menu ">
                     <ul class="nav flex-column" role="tablist">

@@ -18,7 +18,7 @@ class WebVipPackageDetailController extends Controller
         }
 
         if(auth()->user()->role != "phu_huynh"){
-            return redirect()->route('admin.vip.show');
+            return redirect()->route('admin.vip.index');
         }
 
         // Nhận từ khóa tìm kiếm từ request
@@ -56,7 +56,7 @@ class WebVipPackageDetailController extends Controller
         }
 
         if(auth()->user()->role != "phu_huynh"){
-            return redirect()->route('admin.vip.show');
+            return redirect()->route('admin.vip.index');
         }
 
         // Lấy thông tin gia sư hiện tại

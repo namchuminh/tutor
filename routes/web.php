@@ -96,6 +96,8 @@ use App\Http\Controllers\Web\WebAuthController;
 use App\Http\Controllers\Web\WebPhuHuynhController;
 use App\Http\Controllers\Web\WebCommentController;
 use App\Http\Controllers\Web\WebVipPackageDetailController;
+use App\Http\Controllers\Web\WebReviewController;
+
 
 Route::get('/', [WebHomeController::class, 'index'])->name('web.home.index');
 
@@ -138,6 +140,26 @@ Route::post('/binh-luan', action: [WebCommentController::class, 'post'])->name('
 Route::get('/goi-vip', action: [WebVipPackageDetailController::class, 'show'])->name('web.vip.show');
 
 Route::get('/goi-vip/{id}', action: [WebVipPackageDetailController::class, 'register'])->name('web.vip.register');
+
+Route::post('/danh-gia', action: [WebReviewController::class, 'post'])->name('web.review.post');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\VipPackage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
+use App\Models\Review;
 
 
 
@@ -32,7 +33,18 @@ class WebTutorController extends Controller
         ->orderBy('created_at', 'desc') // Sắp xếp theo thời gian tạo
         ->paginate(8); // Mỗi trang hiển thị 10 bài
 
-        return view('web.profile.index', compact('giasu', 'posts', 'newPost'));
+        // Lấy tất cả đánh giá của gia sư dựa trên gia_su_id
+        $reviews = Review::where('gia_su_id', $giasu->id)->get();
+
+        // Tính tổng số sao
+        $totalRating = $reviews->sum('rating');
+
+        // Tính số đánh giá trung bình trên 5 (nếu có đánh giá)
+        $averageRating = $reviews->count() > 0 ? $totalRating / $reviews->count() : 0;
+
+        $countRating = $reviews->count();
+
+        return view('web.profile.index', compact('giasu', 'posts', 'newPost', 'reviews', 'totalRating', 'averageRating', 'countRating'));
     }
 
     public function phone(Request $request){

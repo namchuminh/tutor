@@ -1,6 +1,8 @@
 @extends('Web.layouts.app')
 @section('title', 'Thông Tin Gia Sư')
 @section('content')
+<!-- Bootstrap Bundle JS (bao gồm Popper.js) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <div class="main_content sidebar_right pb-50">
     <div class="container">
         <div class="row">
@@ -11,8 +13,27 @@
                         <a href="{{ route('web.giasu.show',$giasu->user->id ) }}"><img src="{{ empty($giasu->avatar) ? asset('assets/imgs/avatar.png'): asset('storage/' . $giasu->avatar) }}" alt="" class="avatar"></a>
                     </div>
                     <div class="author-info">
-                        <h3><span class="vcard author"><span class="fn"><a href="{{ route('web.giasu.show',$giasu->user->id ) }}" title="Posts by Robert" rel="author">{{ $giasu->user->name }}</a></span></span>
+                        <h3>
+                            <span class="vcard author"><span class="fn"><a href="{{ route('web.giasu.show',$giasu->user->id ) }}" title="Posts by Robert" rel="author">{{ $giasu->user->name }}</a></span></span>
                         </h3>
+                        <div class="star-rating">
+                            @php
+                                $filledStars = $averageRating; // Số sao vàng
+                                $emptyStars = 5 - $filledStars; // Số sao sẫm màu
+                            @endphp
+
+                            <!-- Hiển thị sao vàng -->
+                            @for ($i = 0; $i < $filledStars; $i++)
+                                <i class="fas fa-star text-warning"></i>
+                            @endfor
+
+                            <!-- Hiển thị sao sẫm màu -->
+                            @for ($i = 0; $i < $emptyStars; $i++)
+                                <i class="fas fa-star text-secondary"></i>
+                            @endfor
+                            ({{ $countRating }} đánh giá)
+                        </div>
+                        <br>
                         <h5>Thông Tin Giới Thiệu</h5>
                         <div class="author-description">{{ $giasu->bio }}</div>
                         <h5>Khu Vực Gia Sư</h5>
@@ -27,7 +48,7 @@
                             <a href="{{ route('admin.dashboard') }}" class="author-bio-link mb-15">truy cập quản lý</a>
                         @else
                             <a href="#" class="author-bio-link mb-15 show-phone">Xem liên hệ</a>
-                            <a href="#" class="author-bio-link mb-15">đánh giá</a>
+                            <a href="#" class="author-bio-link mb-15" data-bs-toggle="modal" data-bs-target="#reviewModal">Đánh giá</a>
                         @endif
                     </div>
                 </div>
@@ -162,10 +183,75 @@
         </div>
     </div>
 </div>
+<div id="reviewModal" class="modal fade" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel">Đánh giá</h5>
+            </div>
+            <div class="modal-body">
+                <div class="star-rating text-center">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <i class="fas fa-star star" data-rating="{{ $i }}"></i>
+                    @endfor
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .star-rating .star {
+        font-size: 30px;
+        color: #d6d6d6; /* Sẫm màu */
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+    .star-rating .star.hover,
+    .star-rating .star.selected {
+        color: #ffc107; /* Vàng */
+    }
+</style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 @endsection
 @section('script')
 <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+    $(document).ready(function () {
+        let selectedRating = 0;
+
+        // Hover để hiển thị sao sáng
+        $(".star-rating .star").on("mouseenter", function () {
+            const rating = $(this).data("rating");
+            $(".star-rating .star").each(function (index) {
+                if (index < rating) {
+                    $(this).addClass("hover");
+                } else {
+                    $(this).removeClass("hover");
+                }
+            });
+        }).on("mouseleave", function () {
+            $(".star-rating .star").removeClass("hover");
+        });
+
+        // Chọn sao
+        $(".star-rating .star").on("click", function () {
+            selectedRating = $(this).data("rating");
+            $(".star-rating .star").each(function (index) {
+                if (index < selectedRating) {
+                    $(this).addClass("selected");
+                } else {
+                    $(this).removeClass("selected");
+                }
+            });
+            
+            // Gửi giá trị qua AJAX nếu cần
+            $.post('{{ route('web.review.post') }}', { _token: "{{ csrf_token() }}", rating: selectedRating, gia_su_id: {{ $giasu->id }} }, function(res){
+                location.reload();
+            });
+        });
+    });
+</script>
 <script>
     function formatPhoneNumber(phoneNumber) {
         // Loại bỏ tất cả ký tự không phải số
@@ -189,7 +275,8 @@
                 method: 'POST',
                 data: {
                     user_id,
-                    _token: "{{ csrf_token() }}"                },
+                    _token: "{{ csrf_token() }}"                
+                },
                 success: function (response) {
                     if(!isNaN(response)){
                         $(".phone-text1").html(` <i class="fas fa-phone"></i> ${formatPhoneNumber(response)}`);
